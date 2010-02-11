@@ -1,0 +1,22 @@
+LinThumbnail 1.0
+================
+
+LinThumbnail is a free software. It permits to produce a thumbnail (little image for preview) 
+for a lot of document formats.
+
+Dependences
+-----------
+ * Apache PDFBox - Java PDF Library
+   http://pdfbox.apache.org/
+   Apache License v2.0 - http://www.apache.org/licenses/LICENSE-2.0
+   
+ * Artofsolving JODConverter - Java OpenDocument Converter
+   http://www.artofsolving.com/opensource/jodconverter
+   GNU Lesser General Public License - http://www.gnu.org/licenses/lgpl.html
+   
+ * QOS.ch SL4J - Simple Logging Facade for Java
+   http://www.slf4j.org/
+   MIT license - http://www.slf4j.org/license.html
+   
+ * Bitstream Vera Sans Mono Font - Gnome Project
+   http://www.gnome.org/fonts/
