@@ -63,6 +63,7 @@ public class FileResourceFactory {
 				|| inputFormat.equalsIgnoreCase("c")
 				|| inputFormat.equalsIgnoreCase("h")
 				|| inputFormat.equalsIgnoreCase("cpp")
+				|| inputFormat.equalsIgnoreCase("log")
 				|| inputFormat.equalsIgnoreCase("txt")) {
 			return new TextResource(file);
 		}
