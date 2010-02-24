@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -14,6 +13,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.Constants;
+import org.linagora.LinThumbnail.utils.FontUtils;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +59,7 @@ public class TextResource extends FileResource {
 			 */
 			text = new FileReader(this.resource);
 			doc = new PDDocument();
-			URL fontPath = TextResource.class.getClassLoader().getResource("font/VeraMono.ttf");
-			font = PDTrueTypeFont.loadTTF(doc, new File(fontPath.getFile()));
+			font = PDTrueTypeFont.loadTTF(doc, FontUtils.getFontFile());
 			data = new BufferedReader(text);
 			page = new PDPage();
 			page.setMediaBox(PDPage.PAGE_SIZE_A4);
