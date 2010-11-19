@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<xsl:param name="site-path" select="site-path" />
+	<xsl:variable name="portlet-id" select="portlet/portlet-id" />
+	<xsl:variable name="e-mail-error"
+		select="portlet/newsletter-email-error" />
+	<xsl:variable name="nochoice-error"
+		select="portlet/subscription-nochoice-error" />
+	<xsl:template match="portlet">
+		<div class="portlet-background-colored">
+			<xsl:if test="not(string(display-portlet-title)='1')">
+
+				<h3 class="portlet-background-colored-header">
+					<xsl:value-of disable-output-escaping="yes"
+						select="portlet-name" />
+				</h3>
+			</xsl:if>
+			<div class="portlet-background-colored-content">
+				<form class="default-form" id="newsletter"
+					action="{$site-path}" method="post">
+					<xsl:apply-templates
+						select="newsletter-subscription-list"/>
+					<div>
+						<input name="page" value="newsletter"
+							type="hidden" />
+
+						<input name="action" value="register"
+							type="hidden" />
+						<input name="plugin_name" value="newsletter"
+							type="hidden" />
+						<p>
+						<label for="email">
+							<xsl:value-of
+								select="newsletter-subscription-email" />
+						</label>
+						<input name="email" id="email" maxlength="100" type="text" />
+						<input class="button"
+							value="{newsletter-subscription-button}" type="submit" />
+						<input name="portlet_id" value="{portlet-id}"
+							type="hidden" />
+
+						</p>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</xsl:template>
+
+
+	<xsl:template match="newsletter-subscription-list">
+
+		<xsl:if test="newsletter-subscription" >
+			<p>
+				<ul>
+					<xsl:apply-templates select="newsletter-subscription" >
+						<xsl:sort select="newsletter-subscription-subject"/>
+					</xsl:apply-templates>
+				</ul>
+			</p>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="newsletter-subscription">
+		<li>
+			<input type="checkbox" class="checkbox-field"
+				name="newsletter_id"
+				id="newsletter_id_{newsletter-subscription-id}" value="{newsletter-subscription-id}" checked="checked" />
+				<label for="newsletter_id_{newsletter-subscription-id}"><xsl:value-of select="newsletter-subscription-subject" /></label>
+		</li>
+	</xsl:template>
+
+</xsl:stylesheet>
+
+
