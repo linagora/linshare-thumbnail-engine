@@ -50,12 +50,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.6</version>
+            <version>${slf4j-release-version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>1.5.6</version>
+            <version>${slf4j-release-version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -99,4 +99,9 @@
             <url>http://repo.linpki.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+    
+    <properties>
+		<slf4j-release-version>1.7.2</slf4j-release-version>
+	</properties>
+    
 </project>
