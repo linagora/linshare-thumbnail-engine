@@ -11,6 +11,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.FontUtils;
@@ -51,7 +53,6 @@ public class TextResource extends FileResource {
 
 		int fontSize = 17;
 		int margin = 15;
-		int imageType = BufferedImage.TYPE_INT_RGB;
 
 		try {
 			/**
@@ -66,7 +67,7 @@ public class TextResource extends FileResource {
 			doc.addPage(page);
 			contentStream = new PDPageContentStream(doc, page);
 
-			float height = font.getFontBoundingBox().getHeight() / 1000;
+			float height = font.getBoundingBox().getHeight() / 1000;
 			height = height * fontSize * 1.05f;
 			float y = page.getMediaBox().getHeight() - margin + height;
 
@@ -96,7 +97,7 @@ public class TextResource extends FileResource {
 			/**
 			 * Second task: convert pdf page to image
 			 */
-			image = page.convertToImage(imageType, Constants.RESOLUTION);
+			image = new PDFRenderer(doc).renderImageWithDPI(0, Constants.RESOLUTION, ImageType.RGB);
 			int maxDim = Math.max(image.getHeight(), image.getWidth());
 			if (maxDim > Constants.MAXDIM) {
 				image = ImageUtils.scale(image, Constants.MAXDIM);
@@ -104,6 +105,9 @@ public class TextResource extends FileResource {
 		} catch (IOException io) {
 			throw io;
 		} finally {
+			if (data != null) {
+				data.close();
+			}
 			if (doc != null) {
 				doc.close();
 			}
