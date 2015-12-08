@@ -39,7 +39,7 @@
                 <role>Developer</role>
             </roles>
         </developer>
-		<developer>
+        <developer>
             <id>ctjhoa</id>
             <name>Camille Tjhoa</name>
             <email>ctjhoa@linagora.com</email>
@@ -86,19 +86,12 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>Maven Central Repository</id>
-            <url>http://repo1.maven.org/maven2/</url>
+            <id>Linagora-LinShare-Repositories</id>
+            <url>https://nexus.linagora.com/content/groups/linshare</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-		<repository>
-			<id>Linagora-releases</id>
-			<url>http://repo.linpki.org/nexus/content/repositories/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
     </repositories>
     <build>
         <finalName>linthumbnail</finalName>
@@ -116,19 +109,17 @@
     </build>
     <distributionManagement>
         <repository>
-            <id>Linagora-Nexus-Releases</id>
-            <name>Linagora Nexus Releases</name>
-            <url>http://repo.linpki.org/nexus/content/repositories/releases/</url>
+            <id>Linagora-LinShare-Releases</id>
+            <name>Linagora LinShare Releases</name>
+            <url>https://nexus.linagora.com/content/repositories/linshare-releases</url>
         </repository>
         <snapshotRepository>
-            <id>Linagora-Nexus-Snapshosts</id>
-            <name>Linagora Nexus Snapshots</name>
-            <url>http://repo.linpki.org/nexus/content/repositories/snapshots/</url>
+            <id>Linagora-LinShare-Snapshots</id>
+            <name>Linagora LinShare Snapshots</name>
+            <url>https://nexus.linagora.com/content/repositories/linshare-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    
     <properties>
-		<slf4j-release-version>1.7.2</slf4j-release-version>
-	</properties>
-    
+        <slf4j-release-version>1.7.2</slf4j-release-version>
+    </properties>
 </project>
