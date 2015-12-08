@@ -6,18 +6,19 @@
     <packaging>jar</packaging>
     <name>LinThumbnail</name>
     <description>Generating thumbnails (image preview) for various document formats</description>
-    
-    <scm>                                                                                                                  
-        <developerConnection>scm:svn:https://svn.linid.org/svn/linshare/trunk/libraries/linThumbnail</developerConnection>
-        <connection>scm:svn:http://svn.linid.org/svn/linshare/trunk/libraries/linThumbnail</connection>
-        <url>http://svn.linid.org/svn/linshare/trunk/libraries/linThumbnail</url>
+
+    <scm>
+        <connection>scm:git:git://github.com/linagora/linshare-linthumbnail.git</connection>
+        <developerConnection>scm:git:https://ci-gsafe.linagora.com/stash/scm/linshare/linshare-linthumbnail.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://github.com/linagora/linshare-linthumbnail/tree/master/</url>
     </scm>
-    
+
     <organization>
         <name>LINAGORA</name>
         <url>http://www.linagora.com/</url>
     </organization>
-    
+
     <developers>
         <developer>
             <id>fmartin</id>
@@ -30,25 +31,25 @@
             </roles>
         </developer>
         <developer>
-            <id>nbertrand</id>
-            <name>Nicolas Bertrand</name>
-            <email>nbertrand@linagora.com</email>
+            <id>asall</id>
+            <name>Alpha Sall</name>
+            <email>asall@linagora.com</email>
             <organization>LINAGORA</organization>
             <organizationUrl>http://www.linagora.com/</organizationUrl>
             <roles>
                 <role>Developer</role>
             </roles>
         </developer>
-		<developer>
-            <id>ctjhoa</id>
-            <name>Camille Tjhoa</name>
-            <email>ctjhoa@linagora.com</email>
+        <developer>
+            <id>akone</id>
+            <name>Alioune Kone</name>
+            <email>akone@linagora.com</email>
             <organization>LINAGORA</organization>
             <organizationUrl>http://www.linagora.com/</organizationUrl>
             <roles>
                 <role>Developer</role>
             </roles>
-        </developer>        
+        </developer>
     </developers>
     <licenses>
         <license>
@@ -86,19 +87,12 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>Maven Central Repository</id>
-            <url>http://repo1.maven.org/maven2/</url>
+            <id>Linagora-LinShare-Repositories</id>
+            <url>https://nexus.linagora.com/content/groups/linshare</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-		<repository>
-			<id>Linagora-releases</id>
-			<url>http://repo.linpki.org/nexus/content/repositories/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
     </repositories>
     <build>
         <finalName>linthumbnail</finalName>
@@ -106,29 +100,56 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
                     <optimize>true</optimize>
                 </configuration>
             </plugin>
+            <!-- maven-release-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+            <!--maven-install-plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <!--maven-deploy-plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <distributionManagement>
         <repository>
-            <id>Linagora-Nexus-Releases</id>
-            <name>Linagora Nexus Releases</name>
-            <url>http://repo.linpki.org/nexus/content/repositories/releases/</url>
+            <id>Linagora-LinShare-Releases</id>
+            <name>Linagora LinShare Releases</name>
+            <url>https://nexus.linagora.com/content/repositories/linshare-releases</url>
         </repository>
         <snapshotRepository>
-            <id>Linagora-Nexus-Snapshosts</id>
-            <name>Linagora Nexus Snapshots</name>
-            <url>http://repo.linpki.org/nexus/content/repositories/snapshots/</url>
+            <id>Linagora-LinShare-Snapshots</id>
+            <name>Linagora LinShare Snapshots</name>
+            <url>https://nexus.linagora.com/content/repositories/linshare-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    
     <properties>
-		<slf4j-release-version>1.7.2</slf4j-release-version>
-	</properties>
-    
+        <slf4j-release-version>1.7.2</slf4j-release-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>
