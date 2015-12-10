@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.linagora</groupId>
     <artifactId>LinThumbnail</artifactId>
-    <version>1.2</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>LinThumbnail</name>
     <description>Generating thumbnails (image preview) for various document formats</description>
