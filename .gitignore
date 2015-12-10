@@ -1,0 +1,9 @@
+/bin
+/target
+/.classpath
+/.settings
+/.idea
+/.project
+*.swp
+/pom.xml.releaseBackup
+/release.properties
