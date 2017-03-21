@@ -4,10 +4,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
@@ -36,9 +37,9 @@ public class PDFResource extends FileResource {
 
 		try {
 			document = PDDocument.load(this.resource);
-			List<PDPage> pages = document.getDocumentCatalog().getAllPages();
+			PDPageTree pages = document.getDocumentCatalog().getPages();
 			PDPage page = pages.get(0);
-			page.setMediaBox(PDPage.PAGE_SIZE_A4);
+			page.setMediaBox(PDRectangle.A4);
 			doc = new PDDocument();
 			doc.addPage(page);
 

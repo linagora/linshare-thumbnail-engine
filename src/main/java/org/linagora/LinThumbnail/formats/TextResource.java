@@ -9,8 +9,9 @@ import java.io.InputStream;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
@@ -44,7 +45,7 @@ public class TextResource extends FileResource {
 	public BufferedImage generateThumbnailImage() throws IOException {
 		PDDocument doc = null;
 		PDPage page = null;
-		PDTrueTypeFont font = null;
+		PDType0Font font = null;
 		BufferedReader data = null;
 		PDPageContentStream contentStream = null;
 		FileReader text = null;
@@ -60,10 +61,10 @@ public class TextResource extends FileResource {
 			 */
 			text = new FileReader(this.resource);
 			doc = new PDDocument();
-			font = PDTrueTypeFont.loadTTF(doc, FontUtils.getFontFile());
+			font = PDType0Font.load(doc, FontUtils.getFontFile());
 			data = new BufferedReader(text);
 			page = new PDPage();
-			page.setMediaBox(PDPage.PAGE_SIZE_A4);
+			page.setMediaBox(PDRectangle.A4);
 			doc.addPage(page);
 			contentStream = new PDPageContentStream(doc, page);
 
@@ -73,20 +74,19 @@ public class TextResource extends FileResource {
 
 			contentStream.setFont(font, fontSize);
 			contentStream.beginText();
-			contentStream.moveTextPositionByAmount(margin, y);
+			contentStream.newLineAtOffset(margin, y);
 
 			while ((nextLine = data.readLine()) != null) {
 				if (y < margin) // if the page is full
 					break;
 
 				if (contentStream == null) {
-					throw new IOException(
-							"Error:Expected non-null content stream.");
+					throw new IOException("Error:Expected non-null content stream.");
 				}
 
-				contentStream.moveTextPositionByAmount(0, -height);
+				contentStream.newLineAtOffset(0, -height);
 				y -= height;
-				contentStream.drawString(nextLine.toString());
+				contentStream.showText(nextLine.toString());
 			}
 
 			if (contentStream != null) {
