@@ -25,16 +25,16 @@ public class ImageResource extends FileResource {
 		this.resource = resource;
 	}
 
+	@Override
 	public BufferedImage generateThumbnailImage() throws IOException {
 		BufferedImage image = null;
 		BufferedImage thumbnailImage = null;
-		
 		image = ImageIO.read(this.resource);
 		thumbnailImage = ImageUtils.scale(image, Constants.MAXDIM);
-		
 		return thumbnailImage;
 	}
 
+	@Override
 	public InputStream generateThumbnailInputStream() throws IOException {
 		BufferedImage image = generateThumbnailImage();
 		return ImageUtils.getInputStreamFromImage(image, "png");

@@ -2,15 +2,20 @@ package org.linagora.LinThumbnail;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Command line convenience to generate thumbnail from file
  * 
  * @author sduprey
  */
 public class GenerateThumbnail {
-	private static final String sofficeCommand = "soffice -headless -accept=\"socket,host=127.0.0.1,port=8100;urp;\" -nofirststartwizard";
-	private static final String sofficeInfo = "If you need to convert Microsoft format documents, don't forget to run OpenOffice.org listening on port 8100:";
-	
+	private static final String sofficeInfo = "If you need to convert Open document or Microsoft format documents, "
+			+ "don't forget install OpenOffice or LibreOffice";
+
+	public static Logger logger = LoggerFactory.getLogger(GenerateThumbnail.class);
+
 	public static void main(String[] args) {
 		GenerateThumbnail app = new GenerateThumbnail();
 		FileResourceFactory factory = FileResourceFactory.getInstance();
@@ -43,20 +48,18 @@ public class GenerateThumbnail {
 			e.printStackTrace();
 		} finally {
 			if (!success) {
-				System.err.println("*** Generation of thumbnail failed");
-				System.err.println(sofficeInfo);
-				System.err.println("    "+sofficeCommand);
+				logger.info("Generation of thumbnail failed");
+				logger.info(sofficeInfo);
 			} else {
-				System.out.println("*** Generation of thumbnail succeeded");
+				logger.info("Generation of thumbnail succeeded");
 			}
 		}
 	}
 
 	private void usage() {
-		System.err.println("usage: " + this.getClass().getName() + " [options] <file>");
-		System.err.println("    -o <output-path/output-file>         The location and name of the thumbnail");
-		System.err.println(sofficeInfo);
-		System.err.println("    "+sofficeCommand);
+		logger.info("usage: " + this.getClass().getName() + " [options] <file>");
+		logger.info("-o <output-path/output-file> The location and name of the thumbnail");
+		logger.info(sofficeInfo);
 	}
 
 }

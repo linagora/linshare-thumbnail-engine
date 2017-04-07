@@ -9,11 +9,11 @@ public class Constants {
 	/**
 	 * Default maximal dimension of the thumbnail
 	 */
-	public static final int MAXDIM = 256;
+	public static final int MAXDIM = 500;
 	/**
 	 * Resolution for PDF to image conversion
 	 */
-	public static final int RESOLUTION = 24;
+	public static final int RESOLUTION = 50;
 	/**
 	 * Thumbnail default fomat
 	 */

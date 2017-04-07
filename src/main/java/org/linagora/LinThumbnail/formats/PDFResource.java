@@ -29,12 +29,11 @@ public class PDFResource extends FileResource {
 		this.resource = resource;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public BufferedImage generateThumbnailImage() throws IOException {
 		PDDocument document = null;
 		BufferedImage image = null;
 		PDDocument doc = null;
-
 		try {
 			document = PDDocument.load(this.resource);
 			PDPageTree pages = document.getDocumentCatalog().getPages();
@@ -42,7 +41,6 @@ public class PDFResource extends FileResource {
 			page.setMediaBox(PDRectangle.A4);
 			doc = new PDDocument();
 			doc.addPage(page);
-
 			image = new PDFRenderer(doc).renderImageWithDPI(0, Constants.RESOLUTION, ImageType.RGB);
 			int maxDim = Math.max(image.getHeight(), image.getWidth());
 			if (maxDim > Constants.MAXDIM) {
@@ -61,6 +59,7 @@ public class PDFResource extends FileResource {
 		return image;
 	}
 
+	@Override
 	public InputStream generateThumbnailInputStream() throws IOException {
 		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
 	}

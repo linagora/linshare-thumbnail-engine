@@ -25,7 +25,7 @@ import org.linagora.LinThumbnail.utils.Constants;
  */
 public abstract class FileResource {
 	protected File resource;
-	
+
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
 	 * 
@@ -41,7 +41,6 @@ public abstract class FileResource {
 	 * @throws IOException
 	 */
 	public abstract InputStream generateThumbnailInputStream() throws IOException;
-	
 
 	/**
 	 * Generates a thumbnail of the FileResource to the given absolute path
@@ -53,12 +52,12 @@ public abstract class FileResource {
 	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
 		BufferedImage thumbnailImage = generateThumbnailImage();
-		
-		if (thumbnailImage==null) return Constants.GENERATE_KO;
 
+		if (thumbnailImage == null) {
+			return Constants.GENERATE_KO;
+		}
 		thumbnailFile.createNewFile();
 		ImageIO.write(thumbnailImage, Constants.THMB_DEFAULT_FORMAT, thumbnailFile);
-
 		return Constants.GENERATE_OK;
 	}
 
@@ -82,8 +81,9 @@ public abstract class FileResource {
 	public String generateThumbnailToDefaultPath() throws IOException {
 		String path = getThumbnailDefaultName();
 		boolean result = generateThumbnail(path);
-		if (result)
+		if (result) {
 			return path;
+		}
 		return null;
 	}
 
@@ -98,8 +98,7 @@ public abstract class FileResource {
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException
 	 */
-	public boolean generateThumbnail(String thmbPath, String thmbName)
-			throws IOException {
+	public boolean generateThumbnail(String thmbPath, String thmbName) throws IOException {
 		return generateThumbnail(thmbPath + File.pathSeparator + thmbName);
 	}
 

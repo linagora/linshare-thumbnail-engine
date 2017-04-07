@@ -11,17 +11,18 @@ public class FileUtils {
 
 	/**
 	 * Get the extension of the filename
+	 * 
 	 * @param file
 	 * @return
 	 */
 	public static String getExtension(File file) {
 		String inputFilePath = file.getAbsolutePath();
-		return inputFilePath.substring(inputFilePath.lastIndexOf('.') + 1,
-				inputFilePath.length());
+		return inputFilePath.substring(inputFilePath.lastIndexOf('.') + 1, inputFilePath.length());
 	}
 
 	/**
 	 * Get the name of the file without extension
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -32,6 +33,7 @@ public class FileUtils {
 
 	/**
 	 * Get the path to the file without filename
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -41,7 +43,8 @@ public class FileUtils {
 		int fs2 = inputFilePath.lastIndexOf('\\');
 		int fs3 = inputFilePath.lastIndexOf(File.pathSeparator);
 		int goodOne = Math.max(Math.max(fs1, fs2), fs3);
-		if (goodOne<1) return "";
+		if (goodOne < 1)
+			return "";
 		return inputFilePath.substring(0, goodOne);
 	}
 
