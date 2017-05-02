@@ -32,74 +32,65 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.formats;
+package org.linagora.LinThumbnail;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.ServiceOfficeManager;
-import org.linagora.LinThumbnail.utils.Constants;
-import org.linagora.LinThumbnail.utils.ImageUtils;
+import org.artofsolving.jodconverter.OfficeDocumentConverter;
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+import org.artofsolving.jodconverter.office.OfficeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Represents : 
- * Open document (ODT, ODS, ODP, ODG) 
- * Microsoft format (DOCX, XLSX,
- * PPTX, DOC, XLS, PPT) Text format (XML, TXT, JAVA, HTML ...)
+ * ServiceOfficeManager: it is the class that starts and stops the openOffice server
  * 
  * @author ysebahi
  */
-public class DocumentResource extends FileResource {
-	public Logger logger = LoggerFactory.getLogger(DocumentResource.class);
+public class ServiceOfficeManager {
 
-	public DocumentResource(File resource) {
-		this.resource = resource;
-	}
+	private OfficeManager officeManager;
 
-	/**
-	 * 1) Convert to PDF 2) Convert to PNG
-	 */
-	@Override
-	public BufferedImage generateThumbnailImage() throws IOException {
-		ServiceOfficeManager som = ServiceOfficeManager.getInstance();
-		BufferedImage image = null;
-		PDDocument document = null;
-		String outputFormat = "pdf";
-		int maxDim = 0;
+	private static ServiceOfficeManager instance = null;
 
-		try {
-			// First convert to PDF
-			File inputFile = this.resource;
-			File outputFile = File.createTempFile("thumbnail", this.resource.getName() + "conv." + outputFormat);
-			outputFile = som.convertToPDF(inputFile, outputFile);
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-			// Second convert to PNG
-			document = PDDocument.load(new FileInputStream(outputFile));
-			image = new PDFRenderer(document).renderImageWithDPI(0, Constants.RESOLUTION, ImageType.RGB);
-			maxDim = Math.max(image.getHeight(), image.getWidth());
-			if (maxDim > Constants.MAXDIM) {
-				image = ImageUtils.scale(image, Constants.MAXDIM);
-			}
-			document.close();
-		} catch (Exception e) {
-			logger.error("Failled to convert the document. ", e);
-			return null;
+	public final static ServiceOfficeManager getInstance() {
+		if (instance == null) {
+			instance = new ServiceOfficeManager();
 		}
-		return image;
+		return instance;
 	}
 
-	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
-		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
+	private ServiceOfficeManager() {
 	}
 
+	public File convertToPDF(File inputFile, File outputFile) {
+		OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
+		converter.convert(inputFile, outputFile);
+		return outputFile;
+	}
+
+	public void startOfficeManager() {
+		if (!this.isStarted()) {
+			logger.info("Start the service...");
+			officeManager = new DefaultOfficeManagerConfiguration().buildOfficeManager();
+			officeManager.start();
+			logger.info("service started");
+		}
+	}
+
+	public Boolean isStarted() {
+		if (officeManager == null || !officeManager.isRunning()) {
+			logger.debug("the service is not running");
+			return false;
+		}
+		logger.info("The service is running");
+		return true;
+	}
+
+	public void stopOfficeManager() {
+		logger.info("Stop the service...");
+		officeManager.stop();
+	}
 }
