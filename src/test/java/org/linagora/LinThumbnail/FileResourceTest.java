@@ -40,10 +40,14 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.linagora.LinThumbnail.utils.LargeThumbnail;
+import org.linagora.LinThumbnail.utils.MediumThumbnail;
+import org.linagora.LinThumbnail.utils.SmallThumbnail;
+import org.linagora.LinThumbnail.utils.Thumbnail;
 
 public class FileResourceTest {
 
-	private ThumbnailService ts = new ThumbnailService();;
+	private ThumbnailService ts = new ThumbnailService();
 
 	@Before
 	public void setUp() {
@@ -57,16 +61,34 @@ public class FileResourceTest {
 
 	@Test
 	public void testGenerateThumbnail() throws IOException {
+
 		FileResourceFactory fabrique = ts.getFactory();
+
+		Thumbnail smThumb;
+
+		Thumbnail mdThumb;
+
+		Thumbnail lgThumb;
+
 		String pathToTestFiles = "src/test/resources/";
 
 		File file = new File(pathToTestFiles + "testingThumbnail.odp");
+		smThumb = new SmallThumbnail(file.getAbsolutePath());
+		mdThumb = new MediumThumbnail(file.getAbsolutePath());
+		lgThumb = new LargeThumbnail(file.getAbsolutePath());
 		FileResource fr = fabrique.getFileResource(file);
-		fr.generateThumbnail();
+		fr.generateThumbnail(smThumb);
+		fr.generateThumbnail(mdThumb);
+		fr.generateThumbnail(lgThumb);
 
 		File file2 = new File(pathToTestFiles + "testingThumbnail.odt");
+		smThumb = new SmallThumbnail(file2.getAbsolutePath());
+		mdThumb = new MediumThumbnail(file2.getAbsolutePath());
+		lgThumb = new LargeThumbnail(file2.getAbsolutePath());
 		FileResource fr2 = fabrique.getFileResource(file2);
-		fr2.generateThumbnail();
+		fr2.generateThumbnail(smThumb);
+		fr2.generateThumbnail(mdThumb);
+		fr2.generateThumbnail(lgThumb);
 
 		File file3 = new File(pathToTestFiles + "testingThumbnail.ods");
 		FileResource fr3 = fabrique.getFileResource(file3);

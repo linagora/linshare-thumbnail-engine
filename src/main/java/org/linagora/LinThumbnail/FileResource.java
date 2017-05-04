@@ -42,6 +42,9 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import org.linagora.LinThumbnail.utils.Constants;
+import org.linagora.LinThumbnail.utils.ImageUtils;
+import org.linagora.LinThumbnail.utils.MediumThumbnail;
+import org.linagora.LinThumbnail.utils.Thumbnail;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
@@ -58,7 +61,19 @@ import org.linagora.LinThumbnail.utils.Constants;
  * @author sduprey
  */
 public abstract class FileResource {
+
 	protected File resource;
+
+	private Thumbnail defaultThumbnail;
+
+	/**
+	 * Generate the thumbnail of the FileResource in a BufferedImage
+	 * 
+	 * @param thumb
+	 * @return
+	 * @throws IOException
+	 */
+	public abstract BufferedImage generateThumbnailImage(Thumbnail thumb) throws IOException;
 
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
@@ -66,7 +81,42 @@ public abstract class FileResource {
 	 * @return
 	 * @throws IOException
 	 */
-	public abstract BufferedImage generateThumbnailImage() throws IOException;
+	protected BufferedImage generateThumbnailImage() throws IOException {
+		return generateThumbnailImage(getDefaultThumbnail());
+	}
+
+	/**
+	 * Get the thumbnail
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public Thumbnail getDefaultThumbnail() {
+		if (this.defaultThumbnail == null) {
+			return new MediumThumbnail(this.resource.getAbsolutePath());
+		}
+		return this.defaultThumbnail;
+	}
+
+	public void setDefaultThumbnail(Thumbnail thumbnail) {
+		this.defaultThumbnail = thumbnail;
+	}
+
+	/**
+	 * Resize the image
+	 * 
+	 * @param image
+	 * @param thumbnail
+	 * @return image
+	 * @throws IOException
+	 */
+	protected BufferedImage resizeImage(BufferedImage image, Thumbnail thumbnail) {
+		int maxDim = Math.max(image.getHeight(), image.getWidth());
+		if (maxDim > thumbnail.getMaxImageSize()) {
+			image = ImageUtils.scale(image, thumbnail.getMaxImageSize());
+		}
+		return image;
+	}
 
 	/**
 	 * Generate the thumbnail of the FileResource in an InputStream
@@ -79,13 +129,14 @@ public abstract class FileResource {
 	/**
 	 * Generates a thumbnail of the FileResource to the given absolute path
 	 * 
+	 * @param thumbnail
 	 * @param thumbnailAbsolutePath
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException
 	 */
-	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {
+	public boolean generateThumbnail(Thumbnail thumbnail, String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
-		BufferedImage thumbnailImage = generateThumbnailImage();
+		BufferedImage thumbnailImage = generateThumbnailImage(thumbnail);
 
 		if (thumbnailImage == null) {
 			return Constants.GENERATE_KO;
@@ -96,13 +147,28 @@ public abstract class FileResource {
 	}
 
 	/**
+	 * Generates a thumbnail of the FileResource to the given absolute path
+	 * 
+	 * @param thumbnailAbsolutePath
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {
+		return generateThumbnail(getDefaultThumbnail(), thumbnailAbsolutePath);
+	}
+
+	public boolean generateThumbnail(Thumbnail thumbnail) throws IOException {
+		return generateThumbnail(thumbnail, thumbnail.getDefaultName());
+	}
+
+	/**
 	 * Generates a thumbnail of the FileResource to the default absolute path
 	 * 
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException
 	 */
 	public boolean generateThumbnail() throws IOException {
-		return generateThumbnail(getThumbnailDefaultName());
+		return generateThumbnail(getDefaultThumbnail());
 	}
 
 	/**
@@ -113,7 +179,7 @@ public abstract class FileResource {
 	 * @throws IOException
 	 */
 	public String generateThumbnailToDefaultPath() throws IOException {
-		String path = getThumbnailDefaultName();
+		String path = this.getDefaultThumbnail().getDefaultName();
 		boolean result = generateThumbnail(path);
 		if (result) {
 			return path;
@@ -134,14 +200,5 @@ public abstract class FileResource {
 	 */
 	public boolean generateThumbnail(String thmbPath, String thmbName) throws IOException {
 		return generateThumbnail(thmbPath + File.pathSeparator + thmbName);
-	}
-
-	/**
-	 * Generates the thumbnail default location and name
-	 * 
-	 * @return the thumbnail default absolute path
-	 */
-	private String getThumbnailDefaultName() {
-		return this.resource.getAbsolutePath() + Constants.THMB_DEFAULT_NAME;
 	}
 }

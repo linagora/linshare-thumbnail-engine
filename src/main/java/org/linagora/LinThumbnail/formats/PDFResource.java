@@ -46,8 +46,8 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
+import org.linagora.LinThumbnail.utils.Thumbnail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class PDFResource extends FileResource {
 	}
 
 	@Override
-	public BufferedImage generateThumbnailImage() throws IOException {
+	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
 		PDDocument document = null;
 		BufferedImage image = null;
 		PDDocument doc = null;
@@ -75,11 +75,8 @@ public class PDFResource extends FileResource {
 			page.setMediaBox(PDRectangle.A4);
 			doc = new PDDocument();
 			doc.addPage(page);
-			image = new PDFRenderer(doc).renderImageWithDPI(0, Constants.RESOLUTION, ImageType.RGB);
-			int maxDim = Math.max(image.getHeight(), image.getWidth());
-			if (maxDim > Constants.MAXDIM) {
-				image = ImageUtils.scale(image, Constants.MAXDIM);
-			}
+			image = new PDFRenderer(doc).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
+			image = resizeImage(image, thumbnail);
 		} catch (IOException e) {
 			throw e;
 		} finally {

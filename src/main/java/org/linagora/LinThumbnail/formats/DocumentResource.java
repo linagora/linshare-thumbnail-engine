@@ -45,8 +45,8 @@ import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
-import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
+import org.linagora.LinThumbnail.utils.Thumbnail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,12 +69,11 @@ public class DocumentResource extends FileResource {
 	 * 1) Convert to PDF 2) Convert to PNG
 	 */
 	@Override
-	public BufferedImage generateThumbnailImage() throws IOException {
+	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
 		ServiceOfficeManager som = ServiceOfficeManager.getInstance();
 		BufferedImage image = null;
 		PDDocument document = null;
 		String outputFormat = "pdf";
-		int maxDim = 0;
 
 		try {
 			// First convert to PDF
@@ -84,11 +83,8 @@ public class DocumentResource extends FileResource {
 
 			// Second convert to PNG
 			document = PDDocument.load(new FileInputStream(outputFile));
-			image = new PDFRenderer(document).renderImageWithDPI(0, Constants.RESOLUTION, ImageType.RGB);
-			maxDim = Math.max(image.getHeight(), image.getWidth());
-			if (maxDim > Constants.MAXDIM) {
-				image = ImageUtils.scale(image, Constants.MAXDIM);
-			}
+			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
+			image = resizeImage(image, thumbnail);
 			document.close();
 		} catch (Exception e) {
 			logger.error("Failled to convert the document. ", e);
@@ -101,5 +97,4 @@ public class DocumentResource extends FileResource {
 	public InputStream generateThumbnailInputStream() throws IOException {
 		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
 	}
-
 }

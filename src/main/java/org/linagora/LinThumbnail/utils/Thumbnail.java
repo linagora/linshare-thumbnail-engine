@@ -2,7 +2,7 @@
  * LinShare is an open source filesharing software, part of the LinPKI software
  * suite, developed by Linagora.
  * 
- * Copyright (C) 2010-2017 LINAGORA
+ * Copyright (C) 2017 LINAGORA
  * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -32,46 +32,61 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.formats;
+package org.linagora.LinThumbnail.utils;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+public class Thumbnail {
 
-import javax.imageio.ImageIO;
+	private String defaultImageName;
 
-import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.utils.ImageUtils;
-import org.linagora.LinThumbnail.utils.Thumbnail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+	private int maxImageSize;
 
-/**
- * Represents common image format files (BMP, PNG, JPEG, GIF)
- * 
- * @author sduprey
- */
-public class ImageResource extends FileResource {
-	public Logger logger = LoggerFactory.getLogger(ImageResource.class);
+	private int resolution;
 
-	public ImageResource(File resource) {
-		this.resource = resource;
+	private String absolutePath;
+
+	public Thumbnail() {
 	}
 
-	@Override
-	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
-		BufferedImage image = null;
-		BufferedImage thumbnailImage = null;
-		image = ImageIO.read(this.resource);
-		thumbnailImage = ImageUtils.scale(image, thumbnail.getMaxImageSize());
-		return thumbnailImage;
+	public Thumbnail(String defaultImageName, int maxImageSize, int resolution, String absolutePath) {
+		this.defaultImageName = defaultImageName;
+		this.maxImageSize = maxImageSize;
+		this.resolution = resolution;
+		this.absolutePath = absolutePath;
 	}
 
-	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
-		BufferedImage image = generateThumbnailImage();
-		return ImageUtils.getInputStreamFromImage(image, "png");
+	public String getDefaultName() {
+		return this.absolutePath + defaultImageName;
 	}
 
+	public String getDefaultImageName() {
+		return defaultImageName;
+	}
+
+	public void setDefaultImageName(String defaultImageName) {
+		this.defaultImageName = defaultImageName;
+	}
+
+	public int getMaxImageSize() {
+		return maxImageSize;
+	}
+
+	public void setMaxImageSize(int maxImageSize) {
+		this.maxImageSize = maxImageSize;
+	}
+
+	public int getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(int resolution) {
+		this.resolution = resolution;
+	}
+
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
+	}
 }

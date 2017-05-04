@@ -2,7 +2,7 @@
  * LinShare is an open source filesharing software, part of the LinPKI software
  * suite, developed by Linagora.
  * 
- * Copyright (C) 2010-2017 LINAGORA
+ * Copyright (C) 2017 LINAGORA
  * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -32,46 +32,11 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.formats;
+package org.linagora.LinThumbnail.utils;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+public class LargeThumbnail extends Thumbnail {
 
-import javax.imageio.ImageIO;
-
-import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.utils.ImageUtils;
-import org.linagora.LinThumbnail.utils.Thumbnail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * Represents common image format files (BMP, PNG, JPEG, GIF)
- * 
- * @author sduprey
- */
-public class ImageResource extends FileResource {
-	public Logger logger = LoggerFactory.getLogger(ImageResource.class);
-
-	public ImageResource(File resource) {
-		this.resource = resource;
+	public LargeThumbnail(String absolutePath) {
+		super("_large_thumbnail.png", 700, 80, absolutePath);
 	}
-
-	@Override
-	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
-		BufferedImage image = null;
-		BufferedImage thumbnailImage = null;
-		image = ImageIO.read(this.resource);
-		thumbnailImage = ImageUtils.scale(image, thumbnail.getMaxImageSize());
-		return thumbnailImage;
-	}
-
-	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
-		BufferedImage image = generateThumbnailImage();
-		return ImageUtils.getInputStreamFromImage(image, "png");
-	}
-
 }
