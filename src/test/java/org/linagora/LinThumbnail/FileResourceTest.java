@@ -76,7 +76,7 @@ public class FileResourceTest {
 		smThumb = new SmallThumbnail(file.getAbsolutePath());
 		mdThumb = new MediumThumbnail(file.getAbsolutePath());
 		lgThumb = new LargeThumbnail(file.getAbsolutePath());
-		FileResource fr = fabrique.getFileResource(file);
+		FileResource fr = fabrique.getFileResource(file, "application/vnd.oasis.opendocument.presentation");
 		fr.generateThumbnail(smThumb);
 		fr.generateThumbnail(mdThumb);
 		fr.generateThumbnail(lgThumb);
@@ -85,115 +85,109 @@ public class FileResourceTest {
 		smThumb = new SmallThumbnail(file2.getAbsolutePath());
 		mdThumb = new MediumThumbnail(file2.getAbsolutePath());
 		lgThumb = new LargeThumbnail(file2.getAbsolutePath());
-		FileResource fr2 = fabrique.getFileResource(file2);
+		FileResource fr2 = fabrique.getFileResource(file2, "application/vnd.oasis.opendocument.text");
 		fr2.generateThumbnail(smThumb);
 		fr2.generateThumbnail(mdThumb);
 		fr2.generateThumbnail(lgThumb);
 
 		File file3 = new File(pathToTestFiles + "testingThumbnail.ods");
-		FileResource fr3 = fabrique.getFileResource(file3);
+		FileResource fr3 = fabrique.getFileResource(file3, "application/vnd.oasis.opendocument.spreadsheet");
 		fr3.generateThumbnail();
 
 		File file3b = new File(pathToTestFiles + "testingThumbnail.odg");
-		FileResource fr3b = fabrique.getFileResource(file3b);
+		FileResource fr3b = fabrique.getFileResource(file3b, "application/vnd.oasis.opendocument.graphics");
 		fr3b.generateThumbnail();
 
 		File file4 = new File(pathToTestFiles + "testingThumbnail.jpg");
-		FileResource fr4 = fabrique.getFileResource(file4);
+		FileResource fr4 = fabrique.getFileResource(file4, "image/jpeg");
 		fr4.generateThumbnail();
 
 		File file5 = new File(pathToTestFiles + "testingThumbnail.png");
-		FileResource fr5 = fabrique.getFileResource(file5);
+		FileResource fr5 = fabrique.getFileResource(file5, "image/png");
 		fr5.generateThumbnail();
 
 		File file6 = new File(pathToTestFiles + "testingThumbnail.gif");
-		FileResource fr6 = fabrique.getFileResource(file6);
+		FileResource fr6 = fabrique.getFileResource(file6, "image/gif");
 		fr6.generateThumbnail();
 
 		File file7 = new File(pathToTestFiles + "testingThumbnail.bmp");
-		FileResource fr7 = fabrique.getFileResource(file7);
+		FileResource fr7 = fabrique.getFileResource(file7, "image/x-ms-bmp");
 		fr7.generateThumbnail();
 
 		File file8 = new File(pathToTestFiles + "testingThumbnail.pdf");
-		FileResource fr8 = fabrique.getFileResource(file8);
+		FileResource fr8 = fabrique.getFileResource(file8, "application/pdf");
 		fr8.generateThumbnail();
 
 		File file9 = new File(pathToTestFiles + "testingThumbnail.txt");
-		FileResource fr9 = fabrique.getFileResource(file9);
+		FileResource fr9 = fabrique.getFileResource(file9, "text/plain");
 		fr9.generateThumbnail();
 
 		File file9b = new File(pathToTestFiles + "testingThumbnail.xml");
-		FileResource fr9b = fabrique.getFileResource(file9b);
+		FileResource fr9b = fabrique.getFileResource(file9b, "application/xml");
 		fr9b.generateThumbnail();
 
 		File file10 = new File(pathToTestFiles + "testingThumbnail.doc");
-		FileResource fr10 = fabrique.getFileResource(file10);
+		FileResource fr10 = fabrique.getFileResource(file10, "application/msword");
 		fr10.generateThumbnail();
 
 		File file11 = new File(pathToTestFiles + "testingThumbnail.xls");
-		FileResource fr11 = fabrique.getFileResource(file11);
+		FileResource fr11 = fabrique.getFileResource(file11, "application/vnd.ms-excel");
 		fr11.generateThumbnail();
 
 		File file12 = new File(pathToTestFiles + "testingThumbnail.ppt");
-		FileResource fr12 = fabrique.getFileResource(file12);
+		FileResource fr12 = fabrique.getFileResource(file12, "application/vnd.ms-powerpoint");
 		fr12.generateThumbnail();
 
 		File file13 = new File(pathToTestFiles + "testingThumbnail.docx");
-		FileResource fr13 = fabrique.getFileResource(file13);
+		FileResource fr13 = fabrique.getFileResource(file13, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		fr13.generateThumbnail();
 
 		File file14 = new File(pathToTestFiles + "testingThumbnail.xlsx");
-		FileResource fr14 = fabrique.getFileResource(file14);
+		FileResource fr14 = fabrique.getFileResource(file14, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		fr14.generateThumbnail();
 
 		File file15 = new File(pathToTestFiles + "testingThumbnail.pptx");
-		FileResource fr15 = fabrique.getFileResource(file15);
+		FileResource fr15 = fabrique.getFileResource(file15, "application/vnd.openxmlformats-officedocument.presentationml.presentation");
 		fr15.generateThumbnail();
 
 		File file16 = new File(pathToTestFiles + "testingThumbnail.java");
-		FileResource fr16 = fabrique.getFileResource(file16);
+		FileResource fr16 = fabrique.getFileResource(file16, "application/java");
 		fr16.generateThumbnail();
 
 		File file17 = new File(pathToTestFiles + "testingThumbnail.html");
-		FileResource fr17 = fabrique.getFileResource(file17);
+		FileResource fr17 = fabrique.getFileResource(file17, "text/html");
 		fr17.generateThumbnail();
 
 		File file18 = new File(pathToTestFiles + "testingThumbnail.php");
-		FileResource fr18 = fabrique.getFileResource(file18);
+		FileResource fr18 = fabrique.getFileResource(file18, "text/x-php");
 		fr18.generateThumbnail();
 
 		File file19 = new File(pathToTestFiles + "testingThumbnail.cpp");
-		FileResource fr19 = fabrique.getFileResource(file19);
+		FileResource fr19 = fabrique.getFileResource(file19, "text/x-c++src");
 		fr19.generateThumbnail();
 
 		File file20 = new File(pathToTestFiles + "testingThumbnail.log");
-		FileResource fr20 = fabrique.getFileResource(file20);
+		FileResource fr20 = fabrique.getFileResource(file20, "text/x-log");
 		fr20.generateThumbnail();
 
 		File file21 = new File(pathToTestFiles + "testingThumbnail.css");
-		FileResource fr21 = fabrique.getFileResource(file21);
+		FileResource fr21 = fabrique.getFileResource(file21, "text/css");
 		fr21.generateThumbnail();
 
 		File file22 = new File(pathToTestFiles + "testingThumbnail.less");
-		FileResource fr22 = fabrique.getFileResource(file22);
+		FileResource fr22 = fabrique.getFileResource(file22, "text/x-less");
 		fr22.generateThumbnail();
 
 		File file23 = new File(pathToTestFiles + "testingThumbnail.js");
-		FileResource fr23 = fabrique.getFileResource(file23);
+		FileResource fr23 = fabrique.getFileResource(file23, "text/plain");
 		fr23.generateThumbnail();
 
 		File file25 = new File(pathToTestFiles + "testingThumbnail.yml");
-		FileResource fr25 = fabrique.getFileResource(file25);
+		FileResource fr25 = fabrique.getFileResource(file25, "text/plain");
 		fr25.generateThumbnail();
 
 		File file26 = new File(pathToTestFiles + "testingThumbnail.xslt");
-		FileResource fr26 = fabrique.getFileResource(file26);
+		FileResource fr26 = fabrique.getFileResource(file26, "application/xhtml+xml");
 		fr26.generateThumbnail();
-
-		File file27 = new File(pathToTestFiles + "Firefox.Setup.29.0.1.exe");
-		FileResource fr27 = fabrique.getFileResource(file27);
-		if (fr27 != null) {
-			fr27.generateThumbnail();
-		}
 	}
 }

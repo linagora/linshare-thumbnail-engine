@@ -71,7 +71,7 @@ public class GenerateThumbnail {
 					}
 				}
 				File file = new File(args[args.length - 1]);
-				FileResource fileResource = factory.getFileResource(file);
+				FileResource fileResource = factory.getFileResource(file, "text/plain");
 				if (thumbnailFile == null) {
 					success = fileResource.generateThumbnail();
 				} else {
