@@ -34,16 +34,18 @@
 
 package org.linagora.LinThumbnail;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.linagora.LinThumbnail.utils.LargeThumbnail;
-import org.linagora.LinThumbnail.utils.MediumThumbnail;
-import org.linagora.LinThumbnail.utils.SmallThumbnail;
-import org.linagora.LinThumbnail.utils.Thumbnail;
+import org.linagora.LinThumbnail.utils.Constants;
+import org.linagora.LinThumbnail.utils.ThumbnailEnum;
 
 public class FileResourceTest {
 
@@ -64,35 +66,19 @@ public class FileResourceTest {
 
 		FileResourceFactory fabrique = ts.getFactory();
 
-		Thumbnail smThumb;
-
-		Thumbnail mdThumb;
-
-		Thumbnail lgThumb;
-
 		String pathToTestFiles = "src/test/resources/";
 
 		File file = new File(pathToTestFiles + "testingThumbnail.odp");
-		smThumb = new SmallThumbnail(file.getAbsolutePath());
-		mdThumb = new MediumThumbnail(file.getAbsolutePath());
-		lgThumb = new LargeThumbnail(file.getAbsolutePath());
 		FileResource fr = fabrique.getFileResource(file, "application/vnd.oasis.opendocument.presentation");
-		fr.generateThumbnail(smThumb);
-		fr.generateThumbnail(mdThumb);
-		fr.generateThumbnail(lgThumb);
+		generateThumbnailMap(fr, file.getAbsolutePath());
 
 		File file2 = new File(pathToTestFiles + "testingThumbnail.odt");
-		smThumb = new SmallThumbnail(file2.getAbsolutePath());
-		mdThumb = new MediumThumbnail(file2.getAbsolutePath());
-		lgThumb = new LargeThumbnail(file2.getAbsolutePath());
 		FileResource fr2 = fabrique.getFileResource(file2, "application/vnd.oasis.opendocument.text");
-		fr2.generateThumbnail(smThumb);
-		fr2.generateThumbnail(mdThumb);
-		fr2.generateThumbnail(lgThumb);
+		generateThumbnailMap(fr2, file2.getAbsolutePath());
 
 		File file3 = new File(pathToTestFiles + "testingThumbnail.ods");
 		FileResource fr3 = fabrique.getFileResource(file3, "application/vnd.oasis.opendocument.spreadsheet");
-		fr3.generateThumbnail();
+		generateThumbnailMap(fr3, file3.getAbsolutePath());
 
 		File file3b = new File(pathToTestFiles + "testingThumbnail.odg");
 		FileResource fr3b = fabrique.getFileResource(file3b, "application/vnd.oasis.opendocument.graphics");
@@ -190,4 +176,15 @@ public class FileResourceTest {
 		FileResource fr26 = fabrique.getFileResource(file26, "application/xhtml+xml");
 		fr26.generateThumbnail();
 	}
+
+	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException {
+		Map<ThumbnailEnum, BufferedImage> thmbImages = fr.generateThumbnailImageMap();
+		for (Map.Entry<ThumbnailEnum, BufferedImage> entry : thmbImages.entrySet()) {
+			File thumbnailFile = new File(absolutePath + "_" + entry.getKey() + ".png");
+			BufferedImage thumbnailImage = entry.getValue();
+			thumbnailFile.createNewFile();
+			ImageIO.write(thumbnailImage, Constants.THMB_DEFAULT_FORMAT, thumbnailFile);
+		}
+	}
+
 }

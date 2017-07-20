@@ -46,7 +46,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
 import org.linagora.LinThumbnail.utils.ImageUtils;
-import org.linagora.LinThumbnail.utils.Thumbnail;
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +69,7 @@ public class DocumentResource extends FileResource {
 	 * 1) Convert to PDF 2) Convert to PNG
 	 */
 	@Override
-	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
+	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		ServiceOfficeManager som = ServiceOfficeManager.getInstance();
 		BufferedImage image = null;
 		PDDocument document = null;

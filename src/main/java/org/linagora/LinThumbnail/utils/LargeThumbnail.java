@@ -34,7 +34,7 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public class LargeThumbnail extends Thumbnail {
+public class LargeThumbnail extends ThumbnailConfig {
 
 	public LargeThumbnail(String absolutePath) {
 		super("_large_thumbnail.png", 700, 80, absolutePath);

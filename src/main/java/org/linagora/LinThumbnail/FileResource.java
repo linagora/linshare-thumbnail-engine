@@ -38,13 +38,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.MediumThumbnail;
-import org.linagora.LinThumbnail.utils.Thumbnail;
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+import org.linagora.LinThumbnail.utils.ThumbnailEnum;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
@@ -64,7 +67,7 @@ public abstract class FileResource {
 
 	protected File resource;
 
-	private Thumbnail defaultThumbnail;
+	private ThumbnailConfig defaultThumbnail;
 
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
@@ -73,7 +76,16 @@ public abstract class FileResource {
 	 * @return
 	 * @throws IOException
 	 */
-	public abstract BufferedImage generateThumbnailImage(Thumbnail thumb) throws IOException;
+	public abstract BufferedImage generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
+
+	public Map<ThumbnailEnum, BufferedImage> generateThumbnailImageMap() throws IOException {
+		Map<ThumbnailEnum, BufferedImage> thumbnailMap = new HashMap<ThumbnailEnum, BufferedImage>();
+		for(ThumbnailEnum kind : ThumbnailEnum.values()) {
+			ThumbnailConfig thumbnailConfig = ThumbnailConfig.getThumbnailConfigFactory(resource.getAbsolutePath(), kind);
+			thumbnailMap.put(kind, generateThumbnailImage(thumbnailConfig));
+		}
+		return thumbnailMap;
+	}
 
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
@@ -91,14 +103,14 @@ public abstract class FileResource {
 	 * @return
 	 * @throws IOException
 	 */
-	public Thumbnail getDefaultThumbnail() {
+	public ThumbnailConfig getDefaultThumbnail() {
 		if (this.defaultThumbnail == null) {
 			return new MediumThumbnail(this.resource.getAbsolutePath());
 		}
 		return this.defaultThumbnail;
 	}
 
-	public void setDefaultThumbnail(Thumbnail thumbnail) {
+	public void setDefaultThumbnail(ThumbnailConfig thumbnail) {
 		this.defaultThumbnail = thumbnail;
 	}
 
@@ -110,7 +122,7 @@ public abstract class FileResource {
 	 * @return image
 	 * @throws IOException
 	 */
-	protected BufferedImage resizeImage(BufferedImage image, Thumbnail thumbnail) {
+	protected BufferedImage resizeImage(BufferedImage image, ThumbnailConfig thumbnail) {
 		int maxDim = Math.max(image.getHeight(), image.getWidth());
 		if (maxDim > thumbnail.getMaxImageSize()) {
 			image = ImageUtils.scale(image, thumbnail.getMaxImageSize());
@@ -134,7 +146,7 @@ public abstract class FileResource {
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException
 	 */
-	public boolean generateThumbnail(Thumbnail thumbnail, String thumbnailAbsolutePath) throws IOException {
+	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
 		BufferedImage thumbnailImage = generateThumbnailImage(thumbnail);
 
@@ -157,7 +169,7 @@ public abstract class FileResource {
 		return generateThumbnail(getDefaultThumbnail(), thumbnailAbsolutePath);
 	}
 
-	public boolean generateThumbnail(Thumbnail thumbnail) throws IOException {
+	public boolean generateThumbnail(ThumbnailConfig thumbnail) throws IOException {
 		return generateThumbnail(thumbnail, thumbnail.getDefaultName());
 	}
 

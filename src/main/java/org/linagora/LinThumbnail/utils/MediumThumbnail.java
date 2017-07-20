@@ -34,7 +34,7 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public class MediumThumbnail extends Thumbnail {
+public class MediumThumbnail extends ThumbnailConfig {
 
 	public MediumThumbnail(String absolutePath) {
 		super("_medium_thumbnail.png", 250, 25, absolutePath);

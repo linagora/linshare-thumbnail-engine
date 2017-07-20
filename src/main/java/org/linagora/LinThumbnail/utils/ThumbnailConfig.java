@@ -34,7 +34,7 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public class Thumbnail {
+public class ThumbnailConfig {
 
 	private String defaultImageName;
 
@@ -44,14 +44,26 @@ public class Thumbnail {
 
 	private String absolutePath;
 
-	public Thumbnail() {
+	public ThumbnailConfig() {
 	}
 
-	public Thumbnail(String defaultImageName, int maxImageSize, int resolution, String absolutePath) {
+	public ThumbnailConfig(String defaultImageName, int maxImageSize, int resolution, String absolutePath) {
 		this.defaultImageName = defaultImageName;
 		this.maxImageSize = maxImageSize;
 		this.resolution = resolution;
 		this.absolutePath = absolutePath;
+	}
+
+	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailEnum thumbnailEnum) {
+		ThumbnailConfig thumbnailconfig = null;
+		if (ThumbnailEnum.SMALL.equals(thumbnailEnum)) {
+			thumbnailconfig = new SmallThumbnail(absolutePath);
+		} else if (ThumbnailEnum.MEDIUM.equals(thumbnailEnum)) {
+			thumbnailconfig = new MediumThumbnail(absolutePath);
+		} else if (ThumbnailEnum.LARGE.equals(thumbnailEnum)) {
+			thumbnailconfig = new LargeThumbnail(absolutePath);
+		}
+		return thumbnailconfig;
 	}
 
 	public String getDefaultName() {

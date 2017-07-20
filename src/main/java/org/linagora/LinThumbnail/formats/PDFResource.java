@@ -47,7 +47,7 @@ import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.ImageUtils;
-import org.linagora.LinThumbnail.utils.Thumbnail;
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class PDFResource extends FileResource {
 	}
 
 	@Override
-	public BufferedImage generateThumbnailImage(Thumbnail thumbnail) throws IOException {
+	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		PDDocument document = null;
 		BufferedImage image = null;
 		PDDocument doc = null;
