@@ -44,12 +44,13 @@ import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.linagora.LinThumbnail.impl.ThumbnailServiceImpl;
 import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ThumbnailEnum;
 
 public class FileResourceTest {
 
-	private ThumbnailService ts = new ThumbnailService();
+	private ThumbnailServiceImpl ts = new ThumbnailServiceImpl();
 
 	@Before
 	public void setUp() {
