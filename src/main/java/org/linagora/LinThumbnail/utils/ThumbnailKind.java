@@ -34,7 +34,7 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public enum ThumbnailEnum {
+public enum ThumbnailKind {
 
 	SMALL, MEDIUM, LARGE;
 }

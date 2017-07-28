@@ -54,13 +54,13 @@ public class ThumbnailConfig {
 		this.absolutePath = absolutePath;
 	}
 
-	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailEnum thumbnailEnum) {
+	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {
 		ThumbnailConfig thumbnailconfig = null;
-		if (ThumbnailEnum.SMALL.equals(thumbnailEnum)) {
+		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
 			thumbnailconfig = new SmallThumbnail(absolutePath);
-		} else if (ThumbnailEnum.MEDIUM.equals(thumbnailEnum)) {
+		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
 			thumbnailconfig = new MediumThumbnail(absolutePath);
-		} else if (ThumbnailEnum.LARGE.equals(thumbnailEnum)) {
+		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
 			thumbnailconfig = new LargeThumbnail(absolutePath);
 		}
 		return thumbnailconfig;

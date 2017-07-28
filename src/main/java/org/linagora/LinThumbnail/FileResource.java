@@ -47,7 +47,7 @@ import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.MediumThumbnail;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
-import org.linagora.LinThumbnail.utils.ThumbnailEnum;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
@@ -78,9 +78,9 @@ public abstract class FileResource {
 	 */
 	public abstract BufferedImage generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
 
-	public Map<ThumbnailEnum, BufferedImage> generateThumbnailImageMap() throws IOException {
-		Map<ThumbnailEnum, BufferedImage> thumbnailMap = new HashMap<ThumbnailEnum, BufferedImage>();
-		for(ThumbnailEnum kind : ThumbnailEnum.values()) {
+	public Map<ThumbnailKind, BufferedImage> generateThumbnailImageMap() throws IOException {
+		Map<ThumbnailKind, BufferedImage> thumbnailMap = new HashMap<ThumbnailKind, BufferedImage>();
+		for(ThumbnailKind kind : ThumbnailKind.values()) {
 			ThumbnailConfig thumbnailConfig = ThumbnailConfig.getThumbnailConfigFactory(resource.getAbsolutePath(), kind);
 			thumbnailMap.put(kind, generateThumbnailImage(thumbnailConfig));
 		}

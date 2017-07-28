@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.linagora.LinThumbnail.impl.ThumbnailServiceImpl;
 import org.linagora.LinThumbnail.utils.Constants;
-import org.linagora.LinThumbnail.utils.ThumbnailEnum;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 
 public class FileResourceTest {
 
@@ -179,8 +179,8 @@ public class FileResourceTest {
 	}
 
 	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException {
-		Map<ThumbnailEnum, BufferedImage> thmbImages = fr.generateThumbnailImageMap();
-		for (Map.Entry<ThumbnailEnum, BufferedImage> entry : thmbImages.entrySet()) {
+		Map<ThumbnailKind, BufferedImage> thmbImages = fr.generateThumbnailImageMap();
+		for (Map.Entry<ThumbnailKind, BufferedImage> entry : thmbImages.entrySet()) {
 			File thumbnailFile = new File(absolutePath + "_" + entry.getKey() + ".png");
 			BufferedImage thumbnailImage = entry.getValue();
 			thumbnailFile.createNewFile();
