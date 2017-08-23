@@ -25,6 +25,10 @@ import org.linagora.LinThumbnail.utils.Constants;
  */
 public abstract class FileResource {
 	protected File resource;
+	/**
+	 * Ugly workaround for v1
+	 */
+	protected String extension;
 	
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
@@ -110,5 +114,13 @@ public abstract class FileResource {
 	 */
 	private String getThumbnailDefaultName() {
 		return this.resource.getAbsolutePath() + Constants.THMB_DEFAULT_NAME;
+	}
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
 	}
 }

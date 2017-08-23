@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.net.ConnectException;
 
 import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.utils.FileUtils;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,23 +26,23 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
 public class MSFDocumentResource extends FileResource {
 	public Logger logger = LoggerFactory.getLogger(MSFDocumentResource.class);
 
-	public MSFDocumentResource(File resource) {
+	public MSFDocumentResource(File resource, String extension) {
 		this.resource = resource;
+		this.extension = extension;
 	}
-	
+
 	public InputStream generateThumbnailInputStream() throws IOException {
 		int port = SocketOpenOfficeConnection.DEFAULT_PORT;
-		String inputFormat = FileUtils.getExtension(this.resource);
         String outputFormat = "";
         InputStream stream = null;
         
-        if (inputFormat.equalsIgnoreCase("doc")) {
+        if (extension.equalsIgnoreCase("doc")) {
         	outputFormat = "odt";
         }
-        else if (inputFormat.equalsIgnoreCase("xls")) {
+        else if (extension.equalsIgnoreCase("xls")) {
         	outputFormat = "ods";        	
         }
-        else if (inputFormat.equalsIgnoreCase("ppt")) {
+        else if (extension.equalsIgnoreCase("ppt")) {
         	outputFormat = "odp";        	
         }
         else return null;
@@ -64,7 +63,7 @@ public class MSFDocumentResource extends FileResource {
             File outputFile = File.createTempFile("thumbnail", this.resource.getName()+"conv."+outputFormat);
             converter.convert(inputFile, outputFile);
             
-            FileResource fr = new OpenDocumentResource(outputFile);
+            FileResource fr = new OpenDocumentResource(outputFile, extension);
             stream = fr.generateThumbnailInputStream();
             outputFile.deleteOnExit();
         } finally {

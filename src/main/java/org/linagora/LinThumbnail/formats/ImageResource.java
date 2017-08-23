@@ -21,8 +21,9 @@ import org.slf4j.LoggerFactory;
 public class ImageResource extends FileResource {
 	public Logger logger = LoggerFactory.getLogger(ImageResource.class);
 
-	public ImageResource(File resource) {
+	public ImageResource(File resource, String extension) {
 		this.resource = resource;
+		this.extension = extension;
 	}
 
 	public BufferedImage generateThumbnailImage() throws IOException {

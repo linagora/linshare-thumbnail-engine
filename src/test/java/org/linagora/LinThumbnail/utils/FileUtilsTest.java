@@ -11,16 +11,6 @@ import org.slf4j.LoggerFactory;
 
 public class FileUtilsTest {
 	private static Logger logger = LoggerFactory.getLogger(FileUtilsTest.class);
-	
-	@Test
-	public void testGetExtension() {
-		File file = new File("src/test/resources/testingThumbnail.txt");
-		String extension = FileUtils.getExtension(file);
-		logger.info(extension);
-		if (!extension.equalsIgnoreCase("txt")) {
-			fail();
-		}
-	}
 
 	@Test
 	public void testGetName() {

@@ -24,8 +24,9 @@ import org.slf4j.LoggerFactory;
 public class PDFResource extends FileResource {
 	public Logger logger = LoggerFactory.getLogger(PDFResource.class);
 
-	public PDFResource(File resource) {
+	public PDFResource(File resource, String extension) {
 		this.resource = resource;
+		this.extension = extension;
 	}
 
 	@SuppressWarnings("unchecked")

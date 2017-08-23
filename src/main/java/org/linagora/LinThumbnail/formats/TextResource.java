@@ -28,8 +28,9 @@ import org.slf4j.LoggerFactory;
 public class TextResource extends FileResource {
 	public Logger logger = LoggerFactory.getLogger(TextResource.class);
 
-	public TextResource(File resource) {
+	public TextResource(File resource, String extension) {
 		this.resource = resource;
+		this.extension = extension;
 	}
 
 	/*

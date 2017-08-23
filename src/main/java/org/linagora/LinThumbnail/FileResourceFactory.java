@@ -7,7 +7,6 @@ import org.linagora.LinThumbnail.formats.MSFDocumentResource;
 import org.linagora.LinThumbnail.formats.OpenDocumentResource;
 import org.linagora.LinThumbnail.formats.PDFResource;
 import org.linagora.LinThumbnail.formats.TextResource;
-import org.linagora.LinThumbnail.utils.FileUtils;
 
 /**
  * Factory of FileResource given a File object.
@@ -24,29 +23,32 @@ public class FileResourceFactory {
         return instance;
     }
 
-	public FileResource getFileResource(File file) {
-		String inputFormat = FileUtils.getExtension(file);
-
+	public FileResource getFileResource(File file, String fileName) {
+		if (fileName == null) {
+			return null;
+		}
+		String inputFormat = fileName.substring(fileName.lastIndexOf('.') + 1,
+				fileName.length());
 		if (inputFormat.equalsIgnoreCase("jpeg")
 				|| inputFormat.equalsIgnoreCase("jpg")
 				|| inputFormat.equalsIgnoreCase("png")
 				|| inputFormat.equalsIgnoreCase("gif")
 				|| inputFormat.equalsIgnoreCase("bmp")) {
-			return new ImageResource(file);
+			return new ImageResource(file, inputFormat);
 		}
 		if (inputFormat.equalsIgnoreCase("odt")
 				|| inputFormat.equalsIgnoreCase("odp")
 				|| inputFormat.equalsIgnoreCase("odg")
 				|| inputFormat.equalsIgnoreCase("ods")) {
-			return new OpenDocumentResource(file);
+			return new OpenDocumentResource(file, inputFormat);
 		}
 		if (inputFormat.equalsIgnoreCase("pdf")) {
-			return new PDFResource(file);
+			return new PDFResource(file, inputFormat);
 		}
 		if (inputFormat.equalsIgnoreCase("doc")
 				|| inputFormat.equalsIgnoreCase("xls")
 				|| inputFormat.equalsIgnoreCase("ppt")) {
-			return new MSFDocumentResource(file);
+			return new MSFDocumentResource(file, inputFormat);
 		}
 		if (inputFormat.equalsIgnoreCase("xml")
 				|| inputFormat.equalsIgnoreCase("xsl")
@@ -65,7 +67,7 @@ public class FileResourceFactory {
 				|| inputFormat.equalsIgnoreCase("cpp")
 				|| inputFormat.equalsIgnoreCase("log")
 				|| inputFormat.equalsIgnoreCase("txt")) {
-			return new TextResource(file);
+			return new TextResource(file, inputFormat);
 		}
 
 		return null;

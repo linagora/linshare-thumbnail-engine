@@ -23,8 +23,9 @@ import org.slf4j.LoggerFactory;
 public class OpenDocumentResource extends FileResource {
 	public Logger logger = LoggerFactory.getLogger(OpenDocumentResource.class);
 
-	public OpenDocumentResource(File resource) {
+	public OpenDocumentResource(File resource, String extension) {
 		this.resource = resource;
+		this.extension = extension;
 	}
 
 	@SuppressWarnings("unchecked")
