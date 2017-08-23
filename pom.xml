@@ -9,7 +9,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/linagora/linshare-linthumbnail.git</connection>
-        <developerConnection>scm:git:https://ci-gsafe.linagora.com/stash/scm/linshare/linshare-linthumbnail.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@ci-gsafe.linagora.com:8000/linshare/linshare-linthumbnail.git</developerConnection>
         <tag>HEAD</tag>
         <url>http://github.com/linagora/linshare-linthumbnail/tree/master/</url>
     </scm>
