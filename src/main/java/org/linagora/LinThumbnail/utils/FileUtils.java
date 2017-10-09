@@ -47,7 +47,7 @@ public class FileUtils {
 	 * Get the extension of the filename
 	 * 
 	 * @param file
-	 * @return
+	 * @return String
 	 */
 	public static String getExtension(File file) {
 		String inputFilePath = file.getAbsolutePath();
@@ -58,7 +58,7 @@ public class FileUtils {
 	 * Get the name of the file without extension
 	 * 
 	 * @param file
-	 * @return
+	 * @return String
 	 */
 	public static String getName(File file) {
 		String inputFileName = file.getName();
@@ -69,7 +69,7 @@ public class FileUtils {
 	 * Get the path to the file without filename
 	 * 
 	 * @param file
-	 * @return
+	 * @return String
 	 */
 	public static String getPath(File file) {
 		String inputFilePath = file.getAbsolutePath();

@@ -73,7 +73,7 @@ public abstract class FileResource {
 	 * Generate the thumbnail of the FileResource in a BufferedImage
 	 * 
 	 * @param thumb
-	 * @return
+	 * @return BufferedImage
 	 * @throws IOException
 	 */
 	public abstract BufferedImage generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
@@ -90,7 +90,7 @@ public abstract class FileResource {
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
 	 * 
-	 * @return
+	 * @return BufferedImage
 	 * @throws IOException
 	 */
 	protected BufferedImage generateThumbnailImage() throws IOException {
@@ -100,7 +100,7 @@ public abstract class FileResource {
 	/**
 	 * Get the thumbnail
 	 * 
-	 * @return
+	 * @return ThumbnailConfig
 	 * @throws IOException
 	 */
 	public ThumbnailConfig getDefaultThumbnail() {
@@ -133,7 +133,7 @@ public abstract class FileResource {
 	/**
 	 * Generate the thumbnail of the FileResource in an InputStream
 	 * 
-	 * @return
+	 * @return InputStream
 	 * @throws IOException
 	 */
 	public abstract InputStream generateThumbnailInputStream() throws IOException;
@@ -162,7 +162,7 @@ public abstract class FileResource {
 	 * Generates a thumbnail of the FileResource to the given absolute path
 	 * 
 	 * @param thumbnailAbsolutePath
-	 * @return
+	 * @return boolean
 	 * @throws IOException
 	 */
 	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {

@@ -56,7 +56,7 @@ public class ImageUtils {
 	 * 
 	 * @param source
 	 * @param maxDim
-	 * @return
+	 * @return BufferedImage
 	 */
 	public static BufferedImage scale(BufferedImage source, int maxDim) {
 		if (source == null) {
@@ -82,7 +82,7 @@ public class ImageUtils {
 	 * 
 	 * @param image
 	 * @param imageType
-	 * @return
+	 * @return InputStream
 	 * @throws IOException
 	 */
 	public static InputStream getInputStreamFromImage(BufferedImage image, String imageType) throws IOException {
@@ -100,7 +100,7 @@ public class ImageUtils {
 	 * Get the image corresponding to the given InputStream
 	 * 
 	 * @param stream
-	 * @return
+	 * @return BufferedImage
 	 * @throws IOException
 	 */
 	public static BufferedImage getBufferedImageFromInputStream(InputStream stream) throws IOException {
