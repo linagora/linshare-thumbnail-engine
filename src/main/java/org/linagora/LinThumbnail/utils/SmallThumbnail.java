@@ -37,6 +37,6 @@ package org.linagora.LinThumbnail.utils;
 public class SmallThumbnail extends ThumbnailConfig {
 
 	public SmallThumbnail(String absolutePath) {
-		super("_small_thumbnail.png", 80, 7, absolutePath);
+		super("_small_thumbnail.png", 180, 15, absolutePath);
 	}
 }

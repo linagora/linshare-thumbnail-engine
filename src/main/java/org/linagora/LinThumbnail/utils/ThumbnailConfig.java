@@ -44,6 +44,8 @@ public class ThumbnailConfig {
 
 	private String absolutePath;
 
+	private ThumbnailKind thumbnailKind;
+
 	public ThumbnailConfig() {
 	}
 
@@ -58,10 +60,13 @@ public class ThumbnailConfig {
 		ThumbnailConfig thumbnailconfig = null;
 		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
 			thumbnailconfig = new SmallThumbnail(absolutePath);
+			thumbnailconfig.setThumbnailKind(ThumbnailKind.SMALL);
 		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
 			thumbnailconfig = new MediumThumbnail(absolutePath);
+			thumbnailconfig.setThumbnailKind(ThumbnailKind.MEDIUM);
 		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
 			thumbnailconfig = new LargeThumbnail(absolutePath);
+			thumbnailconfig.setThumbnailKind(ThumbnailKind.LARGE);
 		}
 		return thumbnailconfig;
 	}
@@ -100,5 +105,13 @@ public class ThumbnailConfig {
 
 	public void setAbsolutePath(String absolutePath) {
 		this.absolutePath = absolutePath;
+	}
+
+	public ThumbnailKind getThumbnailKind() {
+		return thumbnailKind;
+	}
+
+	public void setThumbnailKind(ThumbnailKind thumbnailKind) {
+		this.thumbnailKind = thumbnailKind;
 	}
 }

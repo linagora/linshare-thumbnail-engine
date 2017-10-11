@@ -48,6 +48,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,6 +78,9 @@ public class PDFResource extends FileResource {
 			doc.addPage(page);
 			image = new PDFRenderer(doc).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
 			image = resizeImage(image, thumbnail);
+			if (ThumbnailKind.SMALL.equals(thumbnail.getThumbnailKind())) {
+				image = smallThumbnailResize(image);
+			}
 		} catch (IOException e) {
 			throw e;
 		} finally {

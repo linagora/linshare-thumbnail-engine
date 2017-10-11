@@ -47,6 +47,7 @@ import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +86,9 @@ public class DocumentResource extends FileResource {
 			document = PDDocument.load(new FileInputStream(outputFile));
 			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
 			image = resizeImage(image, thumbnail);
+			if (ThumbnailKind.SMALL.equals(thumbnail.getThumbnailKind())) {
+				image = smallThumbnailResize(image);
+			}
 			document.close();
 		} catch (Exception e) {
 			logger.error("Failled to convert the document. ", e);

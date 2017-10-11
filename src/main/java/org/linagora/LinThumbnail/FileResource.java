@@ -34,6 +34,7 @@
 
 package org.linagora.LinThumbnail;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -128,6 +129,19 @@ public abstract class FileResource {
 			image = ImageUtils.scale(image, thumbnail.getMaxImageSize());
 		}
 		return image;
+	}
+
+	protected BufferedImage smallThumbnailResize(BufferedImage originalImage) {
+		BufferedImage resizedImage = new BufferedImage(180, 135, originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		if (originalImage.getHeight() >  originalImage.getWidth()) {
+			g.drawImage(originalImage, 0, 0, 260, 135, 0, 0, 180, 135, null);
+			g.dispose();
+		} else {
+			g.drawImage(originalImage, 0, 0, 180, 135, null);
+			g.dispose();
+		}
+		return resizedImage;
 	}
 
 	/**
