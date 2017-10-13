@@ -34,9 +34,12 @@
 
 package org.linagora.LinThumbnail.utils;
 
+import org.linagora.LinThumbnail.postprocessing.ResizeSmallImages;
+
 public class SmallThumbnail extends ThumbnailConfig {
 
 	public SmallThumbnail(String absolutePath) {
 		super("_small_thumbnail.png", 180, 15, absolutePath);
+		this.postProcessing = new ResizeSmallImages();
 	}
 }

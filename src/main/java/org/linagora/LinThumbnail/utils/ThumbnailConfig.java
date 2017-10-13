@@ -34,17 +34,20 @@
 
 package org.linagora.LinThumbnail.utils;
 
+import org.linagora.LinThumbnail.postprocessing.Filter;
+import org.linagora.LinThumbnail.postprocessing.NoOp;
+
 public class ThumbnailConfig {
 
-	private String defaultImageName;
+	protected String defaultImageName;
 
-	private int maxImageSize;
+	protected int maxImageSize;
 
-	private int resolution;
+	protected int resolution;
 
-	private String absolutePath;
+	protected String absolutePath;
 
-	private ThumbnailKind thumbnailKind;
+	protected Filter postProcessing;
 
 	public ThumbnailConfig() {
 	}
@@ -54,19 +57,17 @@ public class ThumbnailConfig {
 		this.maxImageSize = maxImageSize;
 		this.resolution = resolution;
 		this.absolutePath = absolutePath;
+		this.postProcessing = new NoOp();
 	}
 
 	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {
 		ThumbnailConfig thumbnailconfig = null;
 		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
 			thumbnailconfig = new SmallThumbnail(absolutePath);
-			thumbnailconfig.setThumbnailKind(ThumbnailKind.SMALL);
 		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
 			thumbnailconfig = new MediumThumbnail(absolutePath);
-			thumbnailconfig.setThumbnailKind(ThumbnailKind.MEDIUM);
 		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
 			thumbnailconfig = new LargeThumbnail(absolutePath);
-			thumbnailconfig.setThumbnailKind(ThumbnailKind.LARGE);
 		}
 		return thumbnailconfig;
 	}
@@ -107,11 +108,11 @@ public class ThumbnailConfig {
 		this.absolutePath = absolutePath;
 	}
 
-	public ThumbnailKind getThumbnailKind() {
-		return thumbnailKind;
+	public Filter getPostProcessing() {
+		return postProcessing;
 	}
 
-	public void setThumbnailKind(ThumbnailKind thumbnailKind) {
-		this.thumbnailKind = thumbnailKind;
+	public void setPostProcessing(Filter postProcessing) {
+		this.postProcessing = postProcessing;
 	}
 }

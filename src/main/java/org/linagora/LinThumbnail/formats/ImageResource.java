@@ -44,7 +44,6 @@ import javax.imageio.ImageIO;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
-import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,9 +65,7 @@ public class ImageResource extends FileResource {
 		BufferedImage thumbnailImage = null;
 		image = ImageIO.read(this.resource);
 		thumbnailImage = ImageUtils.scale(image, thumbnail.getMaxImageSize());
-		if (thumbnail.getThumbnailKind() == ThumbnailKind.SMALL) {
-			thumbnailImage = smallThumbnailResize(thumbnailImage);
-		}
+		image = thumbnail.getPostProcessing().apply(image);
 		return thumbnailImage;
 	}
 
