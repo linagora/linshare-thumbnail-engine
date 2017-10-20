@@ -35,7 +35,7 @@
 package org.linagora.LinThumbnail.utils;
 
 import org.linagora.LinThumbnail.postprocessing.Filter;
-import org.linagora.LinThumbnail.postprocessing.NoOp;
+import org.linagora.LinThumbnail.postprocessing.Resize;
 
 public class ThumbnailConfig {
 
@@ -57,7 +57,7 @@ public class ThumbnailConfig {
 		this.maxImageSize = maxImageSize;
 		this.resolution = resolution;
 		this.absolutePath = absolutePath;
-		this.postProcessing = new NoOp();
+		this.postProcessing = new Resize();
 	}
 
 	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {

@@ -34,23 +34,63 @@
 
 package org.linagora.LinThumbnail.postprocessing;
 
-import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class ResizeSmallImages implements Filter {
+public class ResizeSmallImage extends ResizeDecorator {
 
-	@Override
-	public BufferedImage apply(BufferedImage originalImage) {
-		BufferedImage resizedImage = new BufferedImage(180, 135, originalImage.getType());
-		Graphics2D g = resizedImage.createGraphics();
-		if (originalImage.getHeight() > originalImage.getWidth()) {
-			g.drawImage(originalImage, 0, 0, 260, 135, 0, 0, 180, 135, null);
-			g.dispose();
-		} else {
-			g.drawImage(originalImage, 0, 0, 180, 135, null);
-			g.dispose();
-		}
-		return resizedImage;
+	public ResizeSmallImage(Filter filter) {
+		super(filter);
 	}
 
+	@Override
+	public BufferedImage apply(BufferedImage image, int maxImageSize) {
+		BufferedImage imageResize = filter.apply(image, maxImageSize);
+		int newMaxImageSize = calculMaxFormat(imageResize.getWidth(), imageResize.getHeight());
+		imageResize = filter.apply(image, newMaxImageSize);
+		imageResize = cropImage(imageResize);
+		return imageResize;
+	}
+
+	protected int calculMaxFormat(int width, int hight) {
+		int result = 0;
+		if (width > hight) {
+			result = (((h * w) - (w * hight)) / hight) + w; 
+		} else if (width < hight) {
+			result = (((w * w) - (w * width )) / width) + w; 
+		} else {
+			return width;
+		}
+		return result;
+	}
+
+	protected BufferedImage cropImage (BufferedImage image) {
+		Rectangle goal;
+		if (image.getHeight() > image.getWidth()) {
+			goal = cropHight(image.getHeight(), image.getWidth());
+		} else if (image.getHeight() < image.getWidth()) {
+			goal = cropWidth(image.getHeight(), image.getWidth());
+		} else {
+			if (image.getHeight() == 180) {
+				goal = cropHight(image.getHeight(), image.getWidth());
+			} else {
+				return image; // nothing to do
+			}
+		}
+		Rectangle clip =  goal.intersection(new Rectangle(image.getWidth(), image.getHeight()));
+		image = image.getSubimage(clip.x , clip.y, clip.width, clip.height);
+		return image;
+	}
+
+	protected Rectangle cropHight (int hight, int width) {
+		int y = (hight- h) / 2;
+		Rectangle goal = new Rectangle( 0, y, w, h);
+		return goal;
+	}
+
+	protected Rectangle cropWidth (int hight, int width) {
+		int x = (width - w) / 2;
+		Rectangle goal = new Rectangle(x, 0, w, h);
+		return goal;
+	}
 }

@@ -62,11 +62,9 @@ public class ImageResource extends FileResource {
 	@Override
 	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
-		BufferedImage thumbnailImage = null;
 		image = ImageIO.read(this.resource);
-		thumbnailImage = ImageUtils.scale(image, thumbnail.getMaxImageSize());
-		image = thumbnail.getPostProcessing().apply(image);
-		return thumbnailImage;
+		image = thumbnail.getPostProcessing().apply(image, thumbnail.getMaxImageSize());
+		return image;
 	}
 
 	@Override

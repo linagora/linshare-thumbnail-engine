@@ -36,8 +36,17 @@ package org.linagora.LinThumbnail.postprocessing;
 
 import java.awt.image.BufferedImage;
 
-public interface Filter {
+import org.linagora.LinThumbnail.utils.ImageUtils;
 
-	BufferedImage apply(BufferedImage image, int maxImageSize);
+public class Resize implements Filter{
+
+	@Override
+	public BufferedImage apply(BufferedImage image, int maxImageSize) {
+		int maxDim = Math.max(image.getHeight(), image.getWidth());
+		if (maxDim > maxImageSize) {
+			image = ImageUtils.scale(image, maxImageSize);
+		}
+		return image;
+	}
 
 }

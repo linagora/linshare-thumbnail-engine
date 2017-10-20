@@ -36,11 +36,21 @@ package org.linagora.LinThumbnail.postprocessing;
 
 import java.awt.image.BufferedImage;
 
-public class NoOp implements Filter {
+public abstract class ResizeDecorator implements Filter {
+
+	protected Filter filter;
+
+	protected int h = 135;
+
+	protected int w = 180;
+
+	public ResizeDecorator (Filter filter) {
+		this.filter = filter;
+	}
 
 	@Override
-	public BufferedImage apply(BufferedImage originalImage) {
-		return originalImage;
+	public BufferedImage apply (BufferedImage image, int maxImageSize) {
+		return filter.apply(image, maxImageSize);
 	}
 
 }
