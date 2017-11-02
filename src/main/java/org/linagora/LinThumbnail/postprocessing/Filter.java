@@ -36,8 +36,14 @@ package org.linagora.LinThumbnail.postprocessing;
 
 import java.awt.image.BufferedImage;
 
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+
 public interface Filter {
 
-	BufferedImage apply(BufferedImage image, int maxImageSize);
+	BufferedImage apply(BufferedImage image);
+
+	void setThumbnailConfig(ThumbnailConfig thumbnailConfig);
+
+	ThumbnailConfig getThumbnailConfig();
 
 }

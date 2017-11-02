@@ -63,7 +63,7 @@ public class ImageResource extends FileResource {
 	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
 		image = ImageIO.read(this.resource);
-		image = thumbnail.getPostProcessing().apply(image, thumbnail.getMaxImageSize());
+		image = thumbnail.getPostProcessing().apply(image);
 		return image;
 	}
 

@@ -34,9 +34,13 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public class MediumThumbnail extends ThumbnailConfig {
+import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
+
+public class MediumThumbnail extends ThumbnailConfigImpl {
 
 	public MediumThumbnail(String absolutePath) {
 		super("_medium_thumbnail.png", 250, 25, absolutePath);
+		this.getPostProcessing().setThumbnailConfig(this);
 	}
+
 }

@@ -84,7 +84,7 @@ public class DocumentResource extends FileResource {
 			// Second convert to PNG
 			document = PDDocument.load(new FileInputStream(outputFile));
 			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
-			image = thumbnail.getPostProcessing().apply(image, thumbnail.getMaxImageSize());
+			image = thumbnail.getPostProcessing().apply(image);
 			document.close();
 		} catch (Exception e) {
 			logger.error("Failled to convert the document. ", e);

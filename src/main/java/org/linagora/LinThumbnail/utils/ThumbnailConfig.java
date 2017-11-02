@@ -35,84 +35,21 @@
 package org.linagora.LinThumbnail.utils;
 
 import org.linagora.LinThumbnail.postprocessing.Filter;
-import org.linagora.LinThumbnail.postprocessing.Resize;
 
-public class ThumbnailConfig {
+public interface ThumbnailConfig {
 
-	protected String defaultImageName;
+	String getDefaultName();
 
-	protected int maxImageSize;
+	String getDefaultImageName();
 
-	protected int resolution;
+	int getMaxImageSize();
 
-	protected String absolutePath;
+	int getResolution();
 
-	protected Filter postProcessing;
+	String getAbsolutePath();
 
-	public ThumbnailConfig() {
-	}
+	Filter getPostProcessing();
 
-	public ThumbnailConfig(String defaultImageName, int maxImageSize, int resolution, String absolutePath) {
-		this.defaultImageName = defaultImageName;
-		this.maxImageSize = maxImageSize;
-		this.resolution = resolution;
-		this.absolutePath = absolutePath;
-		this.postProcessing = new Resize();
-	}
+	void setMaxImageSize(int maxImageSize);
 
-	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {
-		ThumbnailConfig thumbnailconfig = null;
-		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
-			thumbnailconfig = new SmallThumbnail(absolutePath);
-		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
-			thumbnailconfig = new MediumThumbnail(absolutePath);
-		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
-			thumbnailconfig = new LargeThumbnail(absolutePath);
-		}
-		return thumbnailconfig;
-	}
-
-	public String getDefaultName() {
-		return this.absolutePath + defaultImageName;
-	}
-
-	public String getDefaultImageName() {
-		return defaultImageName;
-	}
-
-	public void setDefaultImageName(String defaultImageName) {
-		this.defaultImageName = defaultImageName;
-	}
-
-	public int getMaxImageSize() {
-		return maxImageSize;
-	}
-
-	public void setMaxImageSize(int maxImageSize) {
-		this.maxImageSize = maxImageSize;
-	}
-
-	public int getResolution() {
-		return resolution;
-	}
-
-	public void setResolution(int resolution) {
-		this.resolution = resolution;
-	}
-
-	public String getAbsolutePath() {
-		return absolutePath;
-	}
-
-	public void setAbsolutePath(String absolutePath) {
-		this.absolutePath = absolutePath;
-	}
-
-	public Filter getPostProcessing() {
-		return postProcessing;
-	}
-
-	public void setPostProcessing(Filter postProcessing) {
-		this.postProcessing = postProcessing;
-	}
 }

@@ -34,6 +34,9 @@
 
 package org.linagora.LinThumbnail.postprocessing;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -44,53 +47,119 @@ public class ResizeSmallImage extends ResizeDecorator {
 	}
 
 	@Override
-	public BufferedImage apply(BufferedImage image, int maxImageSize) {
-		BufferedImage imageResize = filter.apply(image, maxImageSize);
+	public BufferedImage apply(BufferedImage image) {
+		BufferedImage imageResize = filter.apply(image);
 		int newMaxImageSize = calculMaxFormat(imageResize.getWidth(), imageResize.getHeight());
-		imageResize = filter.apply(image, newMaxImageSize);
+		filter.getThumbnailConfig().setMaxImageSize(newMaxImageSize);
+		imageResize = filter.apply(image);
 		imageResize = cropImage(imageResize);
 		return imageResize;
 	}
 
-	protected int calculMaxFormat(int width, int hight) {
+	/**
+	 * Enlarging of the image to obtain at least the width = 180 or the height = 135.
+	 * return the maximum size between width and height after enlarging the image,
+	 * 
+	 * @param width
+	 * @param hight
+	 * @return int
+	 */
+	public int calculMaxFormat(int width, int hight) {
 		int result = 0;
-		if (width > hight) {
-			result = (((h * w) - (w * hight)) / hight) + w; 
-		} else if (width < hight) {
-			result = (((w * w) - (w * width )) / width) + w; 
+		if ((width > hight) && (hight != 0)) {
+			result = (((hightConstant * widthConstant) - (widthConstant * hight)) / hight) + widthConstant;
+		} else if ((width < hight) && (width != 0)) {
+			result = (((widthConstant * widthConstant) - (widthConstant * width)) / width) + widthConstant;
 		} else {
 			return width;
 		}
 		return result;
 	}
 
-	protected BufferedImage cropImage (BufferedImage image) {
-		Rectangle goal;
-		if (image.getHeight() > image.getWidth()) {
-			goal = cropHight(image.getHeight(), image.getWidth());
-		} else if (image.getHeight() < image.getWidth()) {
-			goal = cropWidth(image.getHeight(), image.getWidth());
+	/**
+	 * Crop image, to fit it into 180*135
+	 * 
+	 * @param image
+	 * @return BufferedImage
+	 */
+	public BufferedImage cropImage(BufferedImage image) {
+		int hight = image.getHeight();
+		int width = image.getWidth();
+		if (hight > hightConstant && width < widthConstant) {
+			image = intersection(cropWidth(hight, width), image);
+			return addBackground(image);
+		} else if (hight < hightConstant && width > widthConstant) {
+			image = intersection(cropHight(hight, width), image);
+			return addBackground(image);
+		} else if (((hight <= hightConstant) && (width <= widthConstant))) {
+			return addBackground(image);
+		} else if (hight > width) {
+			return intersection(cropHight(hight, width), image);
+		} else if (hight < width) {
+			return intersection(cropWidth(hight, width), image);
 		} else {
-			if (image.getHeight() == 180) {
-				goal = cropHight(image.getHeight(), image.getWidth());
-			} else {
-				return image; // nothing to do
-			}
+			return intersection(cropHight(hight, width), image);
 		}
-		Rectangle clip =  goal.intersection(new Rectangle(image.getWidth(), image.getHeight()));
-		image = image.getSubimage(clip.x , clip.y, clip.width, clip.height);
+	}
+
+	/**
+	 * Intersection between the Rectangle and the image, and extraction of subimage
+	 * 
+	 * @param rectangleCrop
+	 * @param image
+	 * @return BufferedImage
+	 */
+	public BufferedImage intersection(Rectangle rectangleCrop, BufferedImage image) {
+		Rectangle clip = rectangleCrop.intersection(new Rectangle(image.getWidth(), image.getHeight()));
+		image = image.getSubimage(clip.x, clip.y, clip.width, clip.height);
 		return image;
 	}
 
-	protected Rectangle cropHight (int hight, int width) {
-		int y = (hight- h) / 2;
-		Rectangle goal = new Rectangle( 0, y, w, h);
-		return goal;
+	/**
+	 * (addBackground) is applicated to the image smaller than 180*135
+	 * its consist to add a transparent background to these images.
+	 * 
+	 * @param image
+	 * @return BufferedImage
+	 */
+	public BufferedImage addBackground(BufferedImage image) {
+		BufferedImage backgroundImage = new BufferedImage(widthConstant, hightConstant, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = backgroundImage.createGraphics();
+		graphics.setColor(new Color(0, 0, 0, 0));
+		graphics.fillRect(0, 0, backgroundImage.getWidth(), backgroundImage.getHeight());
+		BufferedImage combined = new BufferedImage(widthConstant, hightConstant, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = combined.getGraphics();
+		g.drawImage(backgroundImage, 0, 0, null);
+		g.drawImage(image, (widthConstant - image.getWidth()) / 2, (hightConstant - image.getHeight()) / 2, null);
+		return combined;
 	}
 
-	protected Rectangle cropWidth (int hight, int width) {
-		int x = (width - w) / 2;
-		Rectangle goal = new Rectangle(x, 0, w, h);
-		return goal;
+	/**
+	 * CropHight : crop the image in the middle, removing the excess in height
+	 * maximum height = hightConstant 
+	 * 
+	 * @param hight
+	 * @param width
+	 * @return Rectangle
+	 */
+	public Rectangle cropHight(int hight, int width) {
+		int y = (hight - hightConstant) / 2;
+		Rectangle rectangleCrop = new Rectangle(0, y, widthConstant, hightConstant);
+		return rectangleCrop;
 	}
+
+	/**
+	 * CropWidth : crop the image in the middle, removing the excess in width
+	 * Maximum width = widthConstant
+	 * 
+	 * @param hight
+	 * @param width
+	 * @return Rectangle
+	 */
+	public Rectangle cropWidth(int hight, int width) {
+		int x = (width - widthConstant) / 2;
+		Rectangle rectangleCrop = new Rectangle(x, 0, widthConstant, hightConstant);
+		return rectangleCrop;
+	}
+
 }

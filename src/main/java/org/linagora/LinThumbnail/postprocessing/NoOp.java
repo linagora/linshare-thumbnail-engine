@@ -32,14 +32,26 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.utils;
+package org.linagora.LinThumbnail.postprocessing;
 
-import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
+import java.awt.image.BufferedImage;
 
-public class LargeThumbnail extends ThumbnailConfigImpl {
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 
-	public LargeThumbnail(String absolutePath) {
-		super("_large_thumbnail.png", 700, 80, absolutePath);
-		this.getPostProcessing().setThumbnailConfig(this);
+public class NoOp implements Filter {
+
+	@Override
+	public BufferedImage apply(BufferedImage image) {
+		return image;
 	}
+
+	@Override
+	public void setThumbnailConfig(ThumbnailConfig thumbnailConfig) {
+	}
+
+	@Override
+	public ThumbnailConfig getThumbnailConfig() {
+		return null;
+	}
+
 }

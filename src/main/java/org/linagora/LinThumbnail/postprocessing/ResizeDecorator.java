@@ -36,21 +36,35 @@ package org.linagora.LinThumbnail.postprocessing;
 
 import java.awt.image.BufferedImage;
 
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+
 public abstract class ResizeDecorator implements Filter {
 
 	protected Filter filter;
 
-	protected int h = 135;
+	protected ThumbnailConfig thumbnailConfig;
 
-	protected int w = 180;
+	protected int hightConstant = 135;
+
+	protected int widthConstant = 180;
 
 	public ResizeDecorator (Filter filter) {
 		this.filter = filter;
 	}
 
 	@Override
-	public BufferedImage apply (BufferedImage image, int maxImageSize) {
-		return filter.apply(image, maxImageSize);
+	public BufferedImage apply (BufferedImage image) {
+		return filter.apply(image);
+	}
+
+	@Override
+	public void setThumbnailConfig(ThumbnailConfig thumbnailConfig) {
+		this.thumbnailConfig = thumbnailConfig;
+	}
+
+	@Override
+	public ThumbnailConfig getThumbnailConfig() {
+		return thumbnailConfig;
 	}
 
 }
