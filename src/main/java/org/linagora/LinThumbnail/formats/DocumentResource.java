@@ -40,13 +40,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
+import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +63,10 @@ import org.slf4j.LoggerFactory;
  * @author ysebahi
  */
 public class DocumentResource extends FileResource {
+
 	public Logger logger = LoggerFactory.getLogger(DocumentResource.class);
+
+	protected File pdfThumbnail = null;
 
 	public DocumentResource(File resource) {
 		this.resource = resource;
@@ -69,32 +76,61 @@ public class DocumentResource extends FileResource {
 	 * 1) Convert to PDF 2) Convert to PNG
 	 */
 	@Override
-	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
-		ServiceOfficeManager som = ServiceOfficeManager.getInstance();
+	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
 		PDDocument document = null;
-		String outputFormat = "pdf";
+		File imageThumbnail = File.createTempFile("file", "thumbnail");
 
 		try {
+			imageThumbnail.deleteOnExit();
 			// First convert to PDF
 			File inputFile = this.resource;
-			File outputFile = File.createTempFile("thumbnail", this.resource.getName() + "conv." + outputFormat);
-			outputFile = som.convertToPDF(inputFile, outputFile);
-
+			pdfThumbnail = getPdfThumbnail(inputFile);
+			if (ThumbnailKind.PDF.equals(thumbnail.getKind())) {
+				return pdfThumbnail;
+			}
 			// Second convert to PNG
-			document = PDDocument.load(new FileInputStream(outputFile));
-			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
-			image = thumbnail.getPostProcessing().apply(image);
-			document.close();
-		} catch (Exception e) {
-			logger.error("Failled to convert the document. ", e);
-			return null;
+			if (pdfThumbnail != null) {
+				try (FileInputStream fis = new FileInputStream(pdfThumbnail)) {
+					document = PDDocument.load(fis);
+					image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
+					image = thumbnail.getPostProcessing().apply(image);
+					ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, imageThumbnail);
+					document.close();
+				}
+			}
+		} catch (IOException io) {
+			logger.error("Failed to convert the document. ", io);
+			thumbnailClean(imageThumbnail);
+			throw io;
 		}
-		return image;
+		return imageThumbnail;
+	}
+
+	private File getPdfThumbnail(File inputFile) {
+		String outputFormat = "pdf";
+		if (pdfThumbnail != null) {
+			return pdfThumbnail;
+		}
+		try {
+			ServiceOfficeManager som = ServiceOfficeManager.getInstance();
+			pdfThumbnail= File.createTempFile("thumbnail", this.resource.getName() + "conv." + outputFormat);
+			pdfThumbnail.deleteOnExit();
+			pdfThumbnail = som.convertToPDF(inputFile, pdfThumbnail);
+		} catch (IOException e) {
+			logger.error("Failed to generate the PDF file",e);
+		}
+		return pdfThumbnail;
 	}
 
 	@Override
 	public InputStream generateThumbnailInputStream() throws IOException {
 		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
 	}
+
+	@Override
+	public Boolean needToGeneratePDFPreview() {
+		return true;
+	}
+
 }

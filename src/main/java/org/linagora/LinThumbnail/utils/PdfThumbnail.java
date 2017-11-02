@@ -2,7 +2,7 @@
  * LinShare is an open source filesharing software, part of the LinPKI software
  * suite, developed by Linagora.
  * 
- * Copyright (C) 2010-2017 LINAGORA
+ * Copyright (C) 2017 LINAGORA
  * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
@@ -32,61 +32,14 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.formats;
+package org.linagora.LinThumbnail.utils;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
 
-import javax.imageio.ImageIO;
+public class PdfThumbnail extends ThumbnailConfigImpl {
 
-import org.linagora.LinThumbnail.FileResource;
-import org.linagora.LinThumbnail.utils.Constants;
-import org.linagora.LinThumbnail.utils.ImageUtils;
-import org.linagora.LinThumbnail.utils.ThumbnailConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * Represents common image format files (BMP, PNG, JPEG, GIF)
- * 
- * @author sduprey
- */
-public class ImageResource extends FileResource {
-
-	public Logger logger = LoggerFactory.getLogger(ImageResource.class);
-
-	public ImageResource(File resource) {
-		this.resource = resource;
-	}
-
-	@Override
-	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
-		BufferedImage image = null;
-		File thumbnailImage =  File.createTempFile("file", "thumbnail");
-		try {
-			thumbnailImage.deleteOnExit();
-			image = ImageIO.read(this.resource);
-			image = thumbnail.getPostProcessing().apply(image);
-			ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, thumbnailImage);
-		} catch (IOException io) {
-			thumbnailClean(thumbnailImage);
-			logger.debug("Failed to generate thumbnail ", io);
-			throw io;
-		}
-		return thumbnailImage;
-	}
-
-	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
-		File image = generateThumbnailImage();
-		return ImageUtils.getInputStreamFromImage(image, "png");
-	}
-
-	@Override
-	public Boolean needToGeneratePDFPreview() {
-		return false;
+	public PdfThumbnail(String absolutePath) {
+		super("_pdf_thumbnail.pdf", 0, 0, absolutePath);
 	}
 
 }

@@ -37,12 +37,13 @@ package org.linagora.LinThumbnail.utils;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * Help class for image manipulation
@@ -80,19 +81,16 @@ public class ImageUtils {
 	/**
 	 * Get the InputStream corresponding to the given image
 	 * 
-	 * @param image
+	 * @param file
 	 * @param imageType
 	 * @return InputStream
 	 * @throws IOException
 	 */
-	public static InputStream getInputStreamFromImage(BufferedImage image, String imageType) throws IOException {
-		if (image == null) {
+	public static InputStream getInputStreamFromImage(File file, String imageType) throws IOException {
+		if (file == null) {
 			return null;
 		}
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageIO.write(image, imageType, out);
-		byte[] imgData = out.toByteArray();
-		InputStream inputStream = new ByteArrayInputStream(imgData);
+		InputStream inputStream = FileUtils.openInputStream(file);
 		return inputStream;
 	}
 

@@ -36,5 +36,12 @@ package org.linagora.LinThumbnail.utils;
 
 public enum ThumbnailKind {
 
-	SMALL, MEDIUM, LARGE;
+	SMALL, MEDIUM, LARGE, PDF;
+
+	public static String getFileType(ThumbnailKind kind) {
+		if (ThumbnailKind.PDF.equals(kind)) {
+			return ".pdf";
+		}
+		return ".png";
+	}
 }
