@@ -1,9 +1,9 @@
 /*
  * LinShare is an open source filesharing software, part of the LinPKI software
  * suite, developed by Linagora.
- * 
+ *
  * Copyright (C) 2017 LINAGORA
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
@@ -19,12 +19,12 @@
  * refrain from infringing Linagora intellectual property rights over its
  * trademarks and commercial brands. Other Additional Terms apply, see
  * <http://www.linagora.com/licenses/> for more details.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License and
  * its applicable Additional Terms for LinShare along with this program. If not,
  * see <http://www.gnu.org/licenses/> for the GNU Affero General Public License
@@ -32,14 +32,39 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.utils;
+package org.linagora.LinThumbnail.postprocessing;
 
-import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
+import java.awt.image.BufferedImage;
 
-public class LargeThumbnail extends ThumbnailConfigImpl {
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 
-	public LargeThumbnail(String absolutePath) {
-		super("_large_thumbnail.png", 700, 80, absolutePath);
-		this.getPostProcessing().setThumbnailConfig(this);
+public abstract class ResizeDecorator implements Filter {
+
+	protected Filter filter;
+
+	protected ThumbnailConfig thumbnailConfig;
+
+	protected int hightConstant = 135;
+
+	protected int widthConstant = 180;
+
+	public ResizeDecorator (Filter filter) {
+		this.filter = filter;
 	}
+
+	@Override
+	public BufferedImage apply (BufferedImage image) {
+		return filter.apply(image);
+	}
+
+	@Override
+	public void setThumbnailConfig(ThumbnailConfig thumbnailConfig) {
+		this.thumbnailConfig = thumbnailConfig;
+	}
+
+	@Override
+	public ThumbnailConfig getThumbnailConfig() {
+		return thumbnailConfig;
+	}
+
 }

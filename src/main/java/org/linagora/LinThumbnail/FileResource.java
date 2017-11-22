@@ -44,10 +44,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import org.linagora.LinThumbnail.utils.Constants;
-import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.MediumThumbnail;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
+import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
@@ -81,7 +81,7 @@ public abstract class FileResource {
 	public Map<ThumbnailKind, BufferedImage> generateThumbnailImageMap() throws IOException {
 		Map<ThumbnailKind, BufferedImage> thumbnailMap = new HashMap<ThumbnailKind, BufferedImage>();
 		for(ThumbnailKind kind : ThumbnailKind.values()) {
-			ThumbnailConfig thumbnailConfig = ThumbnailConfig.getThumbnailConfigFactory(resource.getAbsolutePath(), kind);
+			ThumbnailConfig thumbnailConfig = ThumbnailConfigImpl.getThumbnailConfigFactory(resource.getAbsolutePath(), kind);
 			thumbnailMap.put(kind, generateThumbnailImage(thumbnailConfig));
 		}
 		return thumbnailMap;
@@ -112,22 +112,6 @@ public abstract class FileResource {
 
 	public void setDefaultThumbnail(ThumbnailConfig thumbnail) {
 		this.defaultThumbnail = thumbnail;
-	}
-
-	/**
-	 * Resize the image
-	 * 
-	 * @param image
-	 * @param thumbnail
-	 * @return image
-	 * @throws IOException
-	 */
-	protected BufferedImage resizeImage(BufferedImage image, ThumbnailConfig thumbnail) {
-		int maxDim = Math.max(image.getHeight(), image.getWidth());
-		if (maxDim > thumbnail.getMaxImageSize()) {
-			image = ImageUtils.scale(image, thumbnail.getMaxImageSize());
-		}
-		return image;
 	}
 
 	/**

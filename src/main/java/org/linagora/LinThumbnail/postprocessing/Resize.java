@@ -1,9 +1,9 @@
 /*
  * LinShare is an open source filesharing software, part of the LinPKI software
  * suite, developed by Linagora.
- * 
+ *
  * Copyright (C) 2017 LINAGORA
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
@@ -19,12 +19,12 @@
  * refrain from infringing Linagora intellectual property rights over its
  * trademarks and commercial brands. Other Additional Terms apply, see
  * <http://www.linagora.com/licenses/> for more details.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License and
  * its applicable Additional Terms for LinShare along with this program. If not,
  * see <http://www.gnu.org/licenses/> for the GNU Affero General Public License
@@ -32,14 +32,37 @@
  * applicable to LinShare software.
  */
 
-package org.linagora.LinThumbnail.utils;
+package org.linagora.LinThumbnail.postprocessing;
 
-import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
+import java.awt.image.BufferedImage;
 
-public class LargeThumbnail extends ThumbnailConfigImpl {
+import org.linagora.LinThumbnail.utils.ImageUtils;
+import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 
-	public LargeThumbnail(String absolutePath) {
-		super("_large_thumbnail.png", 700, 80, absolutePath);
-		this.getPostProcessing().setThumbnailConfig(this);
+public class Resize implements Filter{
+
+	protected ThumbnailConfig thumbnailConfig;
+
+	public Resize () {
 	}
+
+	@Override
+	public BufferedImage apply(BufferedImage image) {
+		int maxDim = Math.max(image.getHeight(), image.getWidth());
+		if (maxDim > thumbnailConfig.getMaxImageSize()) {
+			image = ImageUtils.scale(image, thumbnailConfig.getMaxImageSize());
+		}
+		return image;
+	}
+
+	@Override
+	public ThumbnailConfig getThumbnailConfig() {
+		return thumbnailConfig;
+	}
+
+	@Override
+	public void setThumbnailConfig(ThumbnailConfig thumbnailConfig) {
+		this.thumbnailConfig = thumbnailConfig;
+	}
+
 }

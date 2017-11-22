@@ -34,71 +34,22 @@
 
 package org.linagora.LinThumbnail.utils;
 
-public class ThumbnailConfig {
+import org.linagora.LinThumbnail.postprocessing.Filter;
 
-	private String defaultImageName;
+public interface ThumbnailConfig {
 
-	private int maxImageSize;
+	String getDefaultName();
 
-	private int resolution;
+	String getDefaultImageName();
 
-	private String absolutePath;
+	int getMaxImageSize();
 
-	public ThumbnailConfig() {
-	}
+	int getResolution();
 
-	public ThumbnailConfig(String defaultImageName, int maxImageSize, int resolution, String absolutePath) {
-		this.defaultImageName = defaultImageName;
-		this.maxImageSize = maxImageSize;
-		this.resolution = resolution;
-		this.absolutePath = absolutePath;
-	}
+	String getAbsolutePath();
 
-	public static ThumbnailConfig getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {
-		ThumbnailConfig thumbnailconfig = null;
-		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
-			thumbnailconfig = new SmallThumbnail(absolutePath);
-		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
-			thumbnailconfig = new MediumThumbnail(absolutePath);
-		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
-			thumbnailconfig = new LargeThumbnail(absolutePath);
-		}
-		return thumbnailconfig;
-	}
+	Filter getPostProcessing();
 
-	public String getDefaultName() {
-		return this.absolutePath + defaultImageName;
-	}
+	void setMaxImageSize(int maxImageSize);
 
-	public String getDefaultImageName() {
-		return defaultImageName;
-	}
-
-	public void setDefaultImageName(String defaultImageName) {
-		this.defaultImageName = defaultImageName;
-	}
-
-	public int getMaxImageSize() {
-		return maxImageSize;
-	}
-
-	public void setMaxImageSize(int maxImageSize) {
-		this.maxImageSize = maxImageSize;
-	}
-
-	public int getResolution() {
-		return resolution;
-	}
-
-	public void setResolution(int resolution) {
-		this.resolution = resolution;
-	}
-
-	public String getAbsolutePath() {
-		return absolutePath;
-	}
-
-	public void setAbsolutePath(String absolutePath) {
-		this.absolutePath = absolutePath;
-	}
 }

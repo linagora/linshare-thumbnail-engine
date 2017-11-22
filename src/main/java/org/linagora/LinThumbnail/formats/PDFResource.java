@@ -76,7 +76,7 @@ public class PDFResource extends FileResource {
 			doc = new PDDocument();
 			doc.addPage(page);
 			image = new PDFRenderer(doc).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
-			image = resizeImage(image, thumbnail);
+			image = thumbnail.getPostProcessing().apply(image);
 		} catch (IOException e) {
 			throw e;
 		} finally {
