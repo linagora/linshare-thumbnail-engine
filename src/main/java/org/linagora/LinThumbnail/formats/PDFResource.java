@@ -72,8 +72,9 @@ public class PDFResource extends FileResource {
 		}
 		PDDocument document = null;
 		BufferedImage image = null;
-		File imageThumbnail = File.createTempFile("file", "thumbnail");;
+		File imageThumbnail = null;
 		try {
+			imageThumbnail = File.createTempFile("file", "thumbnail");;
 			imageThumbnail.deleteOnExit();
 			document = PDDocument.load(this.resource);
 			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);

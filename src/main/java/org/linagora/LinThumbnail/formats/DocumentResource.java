@@ -55,9 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Represents : 
- * Open document (ODT, ODS, ODP, ODG) 
- * Microsoft format (DOCX, XLSX,
+ * Represents : Open document (ODT, ODS, ODP, ODG) Microsoft format (DOCX, XLSX,
  * PPTX, DOC, XLS, PPT) Text format (XML, TXT, JAVA, HTML ...)
  * 
  * @author ysebahi
@@ -79,9 +77,9 @@ public class DocumentResource extends FileResource {
 	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
 		PDDocument document = null;
-		File imageThumbnail = File.createTempFile("file", "thumbnail");
-
+		File imageThumbnail = null;
 		try {
+			imageThumbnail = File.createTempFile("file", "thumbnail");
 			imageThumbnail.deleteOnExit();
 			// First convert to PDF
 			File inputFile = this.resource;
@@ -109,16 +107,16 @@ public class DocumentResource extends FileResource {
 
 	private File getPdfThumbnail(File inputFile) {
 		String outputFormat = "pdf";
-		if (pdfThumbnail != null) {
-			return pdfThumbnail;
-		}
 		try {
+			if (pdfThumbnail != null) {
+				return pdfThumbnail;
+			}
 			ServiceOfficeManager som = ServiceOfficeManager.getInstance();
-			pdfThumbnail= File.createTempFile("thumbnail", this.resource.getName() + "conv." + outputFormat);
+			pdfThumbnail = File.createTempFile("thumbnail", this.resource.getName() + "conv." + outputFormat);
 			pdfThumbnail.deleteOnExit();
 			pdfThumbnail = som.convertToPDF(inputFile, pdfThumbnail);
 		} catch (IOException e) {
-			logger.error("Failed to generate the PDF file",e);
+			logger.error("Failed to generate the PDF file", e);
 		}
 		return pdfThumbnail;
 	}
