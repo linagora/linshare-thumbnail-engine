@@ -66,7 +66,7 @@ public class PDFResource extends FileResource {
 	}
 
 	@Override
-	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailFile(ThumbnailConfig thumbnail) throws IOException {
 		if (ThumbnailKind.PDF.equals(thumbnail.getKind())) {
 			return null;
 		}

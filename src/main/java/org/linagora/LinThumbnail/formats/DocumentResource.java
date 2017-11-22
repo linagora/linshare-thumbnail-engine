@@ -74,13 +74,13 @@ public class DocumentResource extends FileResource {
 	 * 1) Convert to PDF 2) Convert to PNG
 	 */
 	@Override
-	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailFile(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
 		PDDocument document = null;
-		File imageThumbnail = null;
+		File thumbnailFile = null;
 		try {
-			imageThumbnail = File.createTempFile("file", "thumbnail");
-			imageThumbnail.deleteOnExit();
+			thumbnailFile = File.createTempFile("file", "thumbnail");
+			thumbnailFile.deleteOnExit();
 			// First convert to PDF
 			File inputFile = this.resource;
 			pdfThumbnail = getPdfThumbnail(inputFile);
@@ -93,16 +93,16 @@ public class DocumentResource extends FileResource {
 					document = PDDocument.load(fis);
 					image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
 					image = thumbnail.getPostProcessing().apply(image);
-					ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, imageThumbnail);
+					ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, thumbnailFile);
 					document.close();
 				}
 			}
 		} catch (IOException io) {
 			logger.error("Failed to convert the document. ", io);
-			thumbnailClean(imageThumbnail);
+			thumbnailClean(thumbnailFile);
 			throw io;
 		}
-		return imageThumbnail;
+		return thumbnailFile;
 	}
 
 	private File getPdfThumbnail(File inputFile) {
