@@ -76,7 +76,7 @@ public abstract class FileResource {
 	 * @return File
 	 * @throws IOException
 	 */
-	public abstract File generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
+	public abstract File generateThumbnailFile(ThumbnailConfig thumb) throws IOException;
 
 	public abstract Boolean needToGeneratePDFPreview();
 
@@ -87,7 +87,7 @@ public abstract class FileResource {
 	 * @return Map<ThumbnailKind, File>
 	 * @throws IOException
 	 */
-	public Map<ThumbnailKind, File> generateThumbnailImageMap() throws IOException {
+	public Map<ThumbnailKind, File> generateThumbnailMap() throws IOException {
 		Map<ThumbnailKind, File> thumbnailMap = new HashMap<ThumbnailKind, File>();
 		try {
 			for (ThumbnailKind kind : ThumbnailKind.values()) {
@@ -97,7 +97,7 @@ public abstract class FileResource {
 				}
 				ThumbnailConfig thumbnailConfig = ThumbnailConfigImpl.getThumbnailConfigFactory(resource.getAbsolutePath(),
 						kind);
-				File tempThumbnail = generateThumbnailImage(thumbnailConfig);
+				File tempThumbnail = generateThumbnailFile(thumbnailConfig);
 				if (tempThumbnail == null) {
 					logger.warn("Thumbnail was null, we aborting generation of thumbnails for this file");
 					return cleanThumbnailMap(thumbnailMap);
@@ -131,7 +131,7 @@ public abstract class FileResource {
 	 * @throws IOException
 	 */
 	protected File generateThumbnailImage() throws IOException {
-		return generateThumbnailImage(getDefaultThumbnail());
+		return generateThumbnailFile(getDefaultThumbnail());
 	}
 
 	/**
@@ -170,7 +170,7 @@ public abstract class FileResource {
 	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
 		try {
-			File thumbnailImage = generateThumbnailImage(thumbnail);
+			File thumbnailImage = generateThumbnailFile(thumbnail);
 			if (thumbnailImage == null) {
 				return false;
 			}

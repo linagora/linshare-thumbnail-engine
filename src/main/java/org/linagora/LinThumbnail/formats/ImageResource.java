@@ -62,7 +62,7 @@ public class ImageResource extends FileResource {
 	}
 
 	@Override
-	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailFile(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
 		File thumbnailImage =  null;
 		try {

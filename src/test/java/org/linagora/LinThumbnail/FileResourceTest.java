@@ -176,7 +176,7 @@ public class FileResourceTest {
 	}
 
 	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException {
-		Map<ThumbnailKind, File> thmbImages = fr.generateThumbnailImageMap();
+		Map<ThumbnailKind, File> thmbImages = fr.generateThumbnailMap();
 		for (Map.Entry<ThumbnailKind, File> entry : thmbImages.entrySet()) {
 			String defaultFormat = ".png";
 			if (ThumbnailKind.PDF.equals(entry.getKey())) {
