@@ -34,20 +34,18 @@
 
 package org.linagora.LinThumbnail;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import org.linagora.LinThumbnail.utils.Constants;
-import org.linagora.LinThumbnail.utils.MediumThumbnail;
+import org.apache.commons.io.FileUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
@@ -65,35 +63,74 @@ import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
  */
 public abstract class FileResource {
 
+	public Logger logger = LoggerFactory.getLogger(FileResource.class);
+
 	protected File resource;
 
 	private ThumbnailConfig defaultThumbnail;
 
 	/**
-	 * Generate the thumbnail of the FileResource in a BufferedImage
+	 * Generate the thumbnail of the FileResource
 	 * 
 	 * @param thumb
-	 * @return BufferedImage
+	 * @return File
 	 * @throws IOException
 	 */
-	public abstract BufferedImage generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
+	public abstract File generateThumbnailImage(ThumbnailConfig thumb) throws IOException;
 
-	public Map<ThumbnailKind, BufferedImage> generateThumbnailImageMap() throws IOException {
-		Map<ThumbnailKind, BufferedImage> thumbnailMap = new HashMap<ThumbnailKind, BufferedImage>();
-		for(ThumbnailKind kind : ThumbnailKind.values()) {
-			ThumbnailConfig thumbnailConfig = ThumbnailConfigImpl.getThumbnailConfigFactory(resource.getAbsolutePath(), kind);
-			thumbnailMap.put(kind, generateThumbnailImage(thumbnailConfig));
+	public abstract Boolean needToGeneratePDFPreview();
+
+	/**
+	 * Generate the thumbnails (SMALL, MEDIUM, LARGE and PDF) of the FileResource
+	 * PDF thumbnail is not generated for image files and pdf files
+	 *
+	 * @return Map<ThumbnailKind, File>
+	 * @throws IOException
+	 */
+	public Map<ThumbnailKind, File> generateThumbnailImageMap() throws IOException {
+		Map<ThumbnailKind, File> thumbnailMap = new HashMap<ThumbnailKind, File>();
+		try {
+			for (ThumbnailKind kind : ThumbnailKind.values()) {
+				// No need to generate PDF preview, if the native document is image or pdf
+				if (ThumbnailKind.PDF.equals(kind) && !needToGeneratePDFPreview()) {
+					continue;
+				}
+				ThumbnailConfig thumbnailConfig = ThumbnailConfigImpl.getThumbnailConfigFactory(resource.getAbsolutePath(),
+						kind);
+				File tempThumbnail = generateThumbnailImage(thumbnailConfig);
+				if (tempThumbnail == null) {
+					logger.warn("Thumbnail was null, we aborting generation of thumbnails for this file");
+					return cleanThumbnailMap(thumbnailMap);
+				}
+				thumbnailMap.put(kind, tempThumbnail);
+			}
+		} catch (IOException io) {
+			return cleanThumbnailMap(thumbnailMap);
 		}
 		return thumbnailMap;
+	}
+
+	public Map<ThumbnailKind, File> cleanThumbnailMap(Map<ThumbnailKind, File> thumbnailMap) {
+		for (Map.Entry<ThumbnailKind, File> entry : thumbnailMap.entrySet()) {
+			thumbnailClean(entry.getValue());
+		}
+		thumbnailMap.clear();
+		return thumbnailMap;
+	}
+
+	public void thumbnailClean(File file) {
+		if (file != null) {
+			file.delete();
+		}
 	}
 
 	/**
 	 * Generate the thumbnail of the FileResource in a BufferedImage
 	 * 
-	 * @return BufferedImage
+	 * @return File
 	 * @throws IOException
 	 */
-	protected BufferedImage generateThumbnailImage() throws IOException {
+	protected File generateThumbnailImage() throws IOException {
 		return generateThumbnailImage(getDefaultThumbnail());
 	}
 
@@ -105,7 +142,7 @@ public abstract class FileResource {
 	 */
 	public ThumbnailConfig getDefaultThumbnail() {
 		if (this.defaultThumbnail == null) {
-			return new MediumThumbnail(this.resource.getAbsolutePath());
+			return ThumbnailConfigImpl.getThumbnailConfigFactory(resource.getAbsolutePath(), ThumbnailKind.MEDIUM);
 		}
 		return this.defaultThumbnail;
 	}
@@ -127,19 +164,24 @@ public abstract class FileResource {
 	 * 
 	 * @param thumbnail
 	 * @param thumbnailAbsolutePath
-	 * @return GENERATE_OK or GENERATE_KO
+	 * @return true or false
 	 * @throws IOException
 	 */
 	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
-		BufferedImage thumbnailImage = generateThumbnailImage(thumbnail);
-
-		if (thumbnailImage == null) {
-			return Constants.GENERATE_KO;
+		try {
+			File thumbnailImage = generateThumbnailImage(thumbnail);
+			if (thumbnailImage == null) {
+				return false;
+			}
+			thumbnailFile.createNewFile();
+			FileUtils.copyFile(thumbnailImage, thumbnailFile);
+			thumbnailClean(thumbnailImage);
+			return true;
+		} catch (IOException io) {
+			thumbnailClean(thumbnailFile);
+			return false;
 		}
-		thumbnailFile.createNewFile();
-		ImageIO.write(thumbnailImage, Constants.THMB_DEFAULT_FORMAT, thumbnailFile);
-		return Constants.GENERATE_OK;
 	}
 
 	/**
@@ -168,8 +210,8 @@ public abstract class FileResource {
 	}
 
 	/**
-	 * Generates a thumbnail of the FileResource to the default absolute path
-	 * and return this path
+	 * Generates a thumbnail of the FileResource to the default absolute path and
+	 * return this path
 	 * 
 	 * @return the path to the thumbnail
 	 * @throws IOException

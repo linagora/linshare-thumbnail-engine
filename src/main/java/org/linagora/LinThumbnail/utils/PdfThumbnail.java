@@ -34,24 +34,12 @@
 
 package org.linagora.LinThumbnail.utils;
 
-import org.linagora.LinThumbnail.postprocessing.Filter;
+import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
 
-public interface ThumbnailConfig {
+public class PdfThumbnail extends ThumbnailConfigImpl {
 
-	String getDefaultName();
-
-	String getDefaultImageName();
-
-	int getMaxImageSize();
-
-	int getResolution();
-
-	String getAbsolutePath();
-
-	Filter getPostProcessing();
-
-	void setMaxImageSize(int maxImageSize);
-
-	ThumbnailKind getKind();
+	public PdfThumbnail(String absolutePath) {
+		super("_pdf_thumbnail.pdf", 0, 0, absolutePath);
+	}
 
 }

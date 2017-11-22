@@ -34,18 +34,15 @@
 
 package org.linagora.LinThumbnail;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.linagora.LinThumbnail.impl.ThumbnailServiceImpl;
-import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
 
 public class FileResourceTest {
@@ -179,12 +176,15 @@ public class FileResourceTest {
 	}
 
 	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException {
-		Map<ThumbnailKind, BufferedImage> thmbImages = fr.generateThumbnailImageMap();
-		for (Map.Entry<ThumbnailKind, BufferedImage> entry : thmbImages.entrySet()) {
-			File thumbnailFile = new File(absolutePath + "_" + entry.getKey() + ".png");
-			BufferedImage thumbnailImage = entry.getValue();
+		Map<ThumbnailKind, File> thmbImages = fr.generateThumbnailImageMap();
+		for (Map.Entry<ThumbnailKind, File> entry : thmbImages.entrySet()) {
+			String defaultFormat = ".png";
+			if (ThumbnailKind.PDF.equals(entry.getKey())) {
+				defaultFormat = ".pdf";
+			}
+			File thumbnailFile = new File(absolutePath + "_" + entry.getKey() + defaultFormat);
 			thumbnailFile.createNewFile();
-			ImageIO.write(thumbnailImage, Constants.THMB_DEFAULT_FORMAT, thumbnailFile);
+			FileUtils.copyFile(entry.getValue(), thumbnailFile);
 		}
 	}
 

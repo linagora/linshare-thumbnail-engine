@@ -39,15 +39,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.linagora.LinThumbnail.FileResource;
+import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
+import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,7 @@ import org.slf4j.LoggerFactory;
  * @author sduprey
  */
 public class PDFResource extends FileResource {
+
 	public Logger logger = LoggerFactory.getLogger(PDFResource.class);
 
 	public PDFResource(File resource) {
@@ -64,35 +66,40 @@ public class PDFResource extends FileResource {
 	}
 
 	@Override
-	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+		if (ThumbnailKind.PDF.equals(thumbnail.getKind())) {
+			return null;
+		}
 		PDDocument document = null;
 		BufferedImage image = null;
-		PDDocument doc = null;
+		File imageThumbnail = null;
 		try {
+			imageThumbnail = File.createTempFile("file", "thumbnail");;
+			imageThumbnail.deleteOnExit();
 			document = PDDocument.load(this.resource);
-			PDPageTree pages = document.getDocumentCatalog().getPages();
-			PDPage page = pages.get(0);
-			page.setMediaBox(PDRectangle.A4);
-			doc = new PDDocument();
-			doc.addPage(page);
-			image = new PDFRenderer(doc).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
+			image = new PDFRenderer(document).renderImageWithDPI(0, thumbnail.getResolution(), ImageType.RGB);
 			image = thumbnail.getPostProcessing().apply(image);
+			ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, imageThumbnail);
 		} catch (IOException e) {
+			logger.debug("Failed to generate thumbnail file", e);
+			thumbnailClean(imageThumbnail);
 			throw e;
 		} finally {
-			if (doc != null) {
-				doc.close();
-			}
 			if (document != null) {
 				document.close();
 			}
 		}
-		return image;
+		return imageThumbnail;
 	}
 
 	@Override
 	public InputStream generateThumbnailInputStream() throws IOException {
 		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
+	}
+
+	@Override
+	public Boolean needToGeneratePDFPreview() {
+		return false;
 	}
 
 }

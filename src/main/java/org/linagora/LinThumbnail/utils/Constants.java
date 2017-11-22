@@ -46,13 +46,4 @@ public class Constants {
 	 */
 	public static final String THMB_DEFAULT_FORMAT = "png";
 
-	/**
-	 * Thumbnail was generated successfully
-	 */
-	public static final boolean GENERATE_OK = true;
-
-	/**
-	 * Thumbnail generation failed
-	 */
-	public static final boolean GENERATE_KO = false;
 }

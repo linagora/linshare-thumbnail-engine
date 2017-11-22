@@ -42,6 +42,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 import org.linagora.LinThumbnail.FileResource;
+import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.slf4j.Logger;
@@ -53,6 +54,7 @@ import org.slf4j.LoggerFactory;
  * @author sduprey
  */
 public class ImageResource extends FileResource {
+
 	public Logger logger = LoggerFactory.getLogger(ImageResource.class);
 
 	public ImageResource(File resource) {
@@ -60,17 +62,32 @@ public class ImageResource extends FileResource {
 	}
 
 	@Override
-	public BufferedImage generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailImage(ThumbnailConfig thumbnail) throws IOException {
 		BufferedImage image = null;
-		image = ImageIO.read(this.resource);
-		image = thumbnail.getPostProcessing().apply(image);
-		return image;
+		File thumbnailImage =  null;
+		try {
+			thumbnailImage =  File.createTempFile("file", "thumbnail");
+			thumbnailImage.deleteOnExit();
+			image = ImageIO.read(this.resource);
+			image = thumbnail.getPostProcessing().apply(image);
+			ImageIO.write(image, Constants.THMB_DEFAULT_FORMAT, thumbnailImage);
+		} catch (IOException io) {
+			thumbnailClean(thumbnailImage);
+			logger.debug("Failed to generate thumbnail ", io);
+			throw io;
+		}
+		return thumbnailImage;
 	}
 
 	@Override
 	public InputStream generateThumbnailInputStream() throws IOException {
-		BufferedImage image = generateThumbnailImage();
+		File image = generateThumbnailImage();
 		return ImageUtils.getInputStreamFromImage(image, "png");
+	}
+
+	@Override
+	public Boolean needToGeneratePDFPreview() {
+		return false;
 	}
 
 }

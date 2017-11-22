@@ -38,6 +38,7 @@ import org.linagora.LinThumbnail.postprocessing.Filter;
 import org.linagora.LinThumbnail.postprocessing.Resize;
 import org.linagora.LinThumbnail.utils.LargeThumbnail;
 import org.linagora.LinThumbnail.utils.MediumThumbnail;
+import org.linagora.LinThumbnail.utils.PdfThumbnail;
 import org.linagora.LinThumbnail.utils.SmallThumbnail;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
@@ -54,6 +55,8 @@ public class ThumbnailConfigImpl implements ThumbnailConfig {
 
 	protected Filter postProcessing;
 
+	protected static ThumbnailKind kind;
+
 	public ThumbnailConfigImpl() {
 	}
 
@@ -67,12 +70,15 @@ public class ThumbnailConfigImpl implements ThumbnailConfig {
 
 	public static ThumbnailConfigImpl getThumbnailConfigFactory(String absolutePath, ThumbnailKind thumbnailEnum) {
 		ThumbnailConfigImpl thumbnailconfig = null;
+		kind = thumbnailEnum;
 		if (ThumbnailKind.SMALL.equals(thumbnailEnum)) {
 			thumbnailconfig = new SmallThumbnail(absolutePath);
 		} else if (ThumbnailKind.MEDIUM.equals(thumbnailEnum)) {
 			thumbnailconfig = new MediumThumbnail(absolutePath);
 		} else if (ThumbnailKind.LARGE.equals(thumbnailEnum)) {
 			thumbnailconfig = new LargeThumbnail(absolutePath);
+		} else if (ThumbnailKind.PDF.equals(thumbnailEnum)) {
+			thumbnailconfig = new PdfThumbnail(absolutePath);
 		}
 		return thumbnailconfig;
 	}
@@ -126,4 +132,10 @@ public class ThumbnailConfigImpl implements ThumbnailConfig {
 	public void setPostProcessing(Filter postProcessing) {
 		this.postProcessing = postProcessing;
 	}
+
+	@Override
+	public ThumbnailKind getKind() {
+		return kind;
+	}
+
 }
