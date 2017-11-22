@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.linagora</groupId>
 	<artifactId>LinThumbnail</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.1</version>
 	<packaging>jar</packaging>
 	<name>LinThumbnail</name>
 	<description>Generating thumbnails (image preview) for various document formats</description>
@@ -10,7 +10,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/linagora/linshare-linthumbnail.git</connection>
 		<developerConnection>scm:git:ssh://git@ci.linagora.com:7999/linagora/lgs/linshare/products/linshare-linthumbnail.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v2.0.1</tag>
 		<url>http://github.com/linagora/linshare-linthumbnail/tree/master/</url>
 	</scm>
 
