@@ -46,7 +46,7 @@ public class FileUtils {
 	/**
 	 * Get the extension of the filename
 	 * 
-	 * @param file
+	 * @param file : File
 	 * @return String
 	 */
 	public static String getExtension(File file) {
@@ -57,7 +57,7 @@ public class FileUtils {
 	/**
 	 * Get the name of the file without extension
 	 * 
-	 * @param file
+	 * @param file ; File
 	 * @return String
 	 */
 	public static String getName(File file) {
@@ -68,7 +68,7 @@ public class FileUtils {
 	/**
 	 * Get the path to the file without filename
 	 * 
-	 * @param file
+	 * @param file : File
 	 * @return String
 	 */
 	public static String getPath(File file) {

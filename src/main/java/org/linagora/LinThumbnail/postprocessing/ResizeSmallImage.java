@@ -60,8 +60,8 @@ public class ResizeSmallImage extends ResizeDecorator {
 	 * Enlarging of the image to obtain at least the width = 180 or the height = 135.
 	 * return the maximum size between width and height after enlarging the image,
 	 * 
-	 * @param width
-	 * @param hight
+	 * @param width : width of the imùage (int)
+	 * @param hight : hight of the image (int)
 	 * @return int
 	 */
 	public int calculMaxFormat(int width, int hight) {
@@ -79,7 +79,7 @@ public class ResizeSmallImage extends ResizeDecorator {
 	/**
 	 * Crop image, to fit it into 180*135
 	 * 
-	 * @param image
+	 * @param image : BufferedImage
 	 * @return BufferedImage
 	 */
 	public BufferedImage cropImage(BufferedImage image) {
@@ -105,8 +105,8 @@ public class ResizeSmallImage extends ResizeDecorator {
 	/**
 	 * Intersection between the Rectangle and the image, and extraction of subimage
 	 * 
-	 * @param rectangleCrop
-	 * @param image
+	 * @param rectangleCrop : Rectangle
+	 * @param image : BufferedImage
 	 * @return BufferedImage
 	 */
 	public BufferedImage intersection(Rectangle rectangleCrop, BufferedImage image) {
@@ -119,7 +119,7 @@ public class ResizeSmallImage extends ResizeDecorator {
 	 * (addBackground) is applicated to the image smaller than 180*135
 	 * its consist to add a transparent background to these images.
 	 * 
-	 * @param image
+	 * @param image : BufferedImage
 	 * @return BufferedImage
 	 */
 	public BufferedImage addBackground(BufferedImage image) {
@@ -138,8 +138,8 @@ public class ResizeSmallImage extends ResizeDecorator {
 	 * CropHight : crop the image in the middle, removing the excess in height
 	 * maximum height = hightConstant 
 	 * 
-	 * @param hight
-	 * @param width
+	 * @param hight : hight of the image (int)
+	 * @param width : width of the image (int)
 	 * @return Rectangle
 	 */
 	public Rectangle cropHight(int hight, int width) {
@@ -152,8 +152,8 @@ public class ResizeSmallImage extends ResizeDecorator {
 	 * CropWidth : crop the image in the middle, removing the excess in width
 	 * Maximum width = widthConstant
 	 * 
-	 * @param hight
-	 * @param width
+	 * @param hight : hight of the image (int)
+	 * @param width : width of the image (int)
 	 * @return Rectangle
 	 */
 	public Rectangle cropWidth(int hight, int width) {

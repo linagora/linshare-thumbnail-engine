@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * FileResource is the class containing the file object from which the thumbnail
- * is generated. <br/>
+ * is generated. <br>
  * Supported formats of file are:
  * <ul>
  * <li>OpenDocumentFormat files: ODP, ODT, ODS, ODG</li>
@@ -72,9 +72,9 @@ public abstract class FileResource {
 	/**
 	 * Generate the thumbnail of the FileResource
 	 * 
-	 * @param thumb
+	 * @param thumb : ThumbnailConfig
 	 * @return File
-	 * @throws IOException
+	 * @throws IOException : Input output exception
 	 */
 	public abstract File generateThumbnailFile(ThumbnailConfig thumb) throws IOException;
 
@@ -84,8 +84,10 @@ public abstract class FileResource {
 	 * Generate the thumbnails (SMALL, MEDIUM, LARGE and PDF) of the FileResource
 	 * PDF thumbnail is not generated for image files and pdf files
 	 *
-	 * @return Map<ThumbnailKind, File>
-	 * @throws IOException
+	 * @return map :
+	 * 			key ThumbnailKind
+	 * 			value File
+	 * @throws IOException : Input output exception
 	 */
 	public Map<ThumbnailKind, File> generateThumbnailMap() throws IOException {
 		Map<ThumbnailKind, File> thumbnailMap = new HashMap<ThumbnailKind, File>();
@@ -128,7 +130,7 @@ public abstract class FileResource {
 	 * Generate the thumbnail of the FileResource in a BufferedImage
 	 * 
 	 * @return File
-	 * @throws IOException
+	 * @throws IOException : Input output exception
 	 */
 	protected File generateThumbnailImage() throws IOException {
 		return generateThumbnailFile(getDefaultThumbnail());
@@ -138,7 +140,6 @@ public abstract class FileResource {
 	 * Get the thumbnail
 	 * 
 	 * @return ThumbnailConfig
-	 * @throws IOException
 	 */
 	public ThumbnailConfig getDefaultThumbnail() {
 		if (this.defaultThumbnail == null) {
@@ -155,17 +156,17 @@ public abstract class FileResource {
 	 * Generate the thumbnail of the FileResource in an InputStream
 	 * 
 	 * @return InputStream
-	 * @throws IOException
+	 * @throws IOException : InputStream
 	 */
 	public abstract InputStream generateThumbnailInputStream() throws IOException;
 
 	/**
 	 * Generates a thumbnail of the FileResource to the given absolute path
 	 * 
-	 * @param thumbnail
-	 * @param thumbnailAbsolutePath
+	 * @param thumbnail : ThumbnailConfig
+	 * @param thumbnailAbsolutePath : String
 	 * @return true or false
-	 * @throws IOException
+	 * @throws IOException : copyfile
 	 */
 	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
@@ -187,9 +188,9 @@ public abstract class FileResource {
 	/**
 	 * Generates a thumbnail of the FileResource to the given absolute path
 	 * 
-	 * @param thumbnailAbsolutePath
+	 * @param thumbnailAbsolutePath : the thumbnail absolute path
 	 * @return boolean
-	 * @throws IOException
+	 * @throws IOException :  Input output exception
 	 */
 	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {
 		return generateThumbnail(getDefaultThumbnail(), thumbnailAbsolutePath);
@@ -203,7 +204,7 @@ public abstract class FileResource {
 	 * Generates a thumbnail of the FileResource to the default absolute path
 	 * 
 	 * @return GENERATE_OK or GENERATE_KO
-	 * @throws IOException
+	 * @throws IOException ; Input output exception
 	 */
 	public boolean generateThumbnail() throws IOException {
 		return generateThumbnail(getDefaultThumbnail());
@@ -214,7 +215,7 @@ public abstract class FileResource {
 	 * return this path
 	 * 
 	 * @return the path to the thumbnail
-	 * @throws IOException
+	 * @throws IOException : IOException
 	 */
 	public String generateThumbnailToDefaultPath() throws IOException {
 		String path = this.getDefaultThumbnail().getDefaultName();
@@ -229,12 +230,12 @@ public abstract class FileResource {
 	 * Generates a thumbnail of the FileResource to the given path and with the
 	 * given name
 	 * 
-	 * @param thmbPath
+	 * @param thmbPath :
 	 *            the path to the thumbnail location
-	 * @param thmbName
+	 * @param thmbName :
 	 *            the thumbnail name
 	 * @return GENERATE_OK or GENERATE_KO
-	 * @throws IOException
+	 * @throws IOException : Input output exception
 	 */
 	public boolean generateThumbnail(String thmbPath, String thmbName) throws IOException {
 		return generateThumbnail(thmbPath + File.pathSeparator + thmbName);
