@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.linagora</groupId>
-	<artifactId>LinThumbnail</artifactId>
-	<version>2.0.2-SNAPSHOT</version>
+	<groupId>org.linagora.linshare</groupId>
+	<artifactId>thumbnail-engine</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>LinThumbnail</name>
-	<description>Generating thumbnails (image preview) for various document formats</description>
+    <name>Thumbnail engine for LinShare</name>
+	<description>Generating thumbnails (image previews) for various document formats</description>
 
 	<scm>
-		<connection>scm:git:git://github.com/linagora/linshare-linthumbnail.git</connection>
-		<developerConnection>scm:git:ssh://git@ci.linagora.com:7999/linagora/lgs/linshare/products/linshare-linthumbnail.git</developerConnection>
+		<connection>scm:git:git://github.com/linagora/linshare-thumbnail-engine.git</connection>
+		<developerConnection>scm:git:ssh://git@ci.linagora.com:7999/linagora/lgs/linshare/products/linshare-thumbnail-engine.git</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://github.com/linagora/linshare-linthumbnail/tree/master/</url>
+		<url>http://github.com/linagora/linshare-thumbnail-engine/tree/master/</url>
 	</scm>
 
 	<organization>
