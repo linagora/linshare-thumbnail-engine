@@ -102,7 +102,6 @@ public class FileResourceFactory {
 		documentMimeType.add("text/css");
 		documentMimeType.add("application/javascript");
 		documentMimeType.add("text/x-less");
-		documentMimeType.add("application/octet-stream");
 		documentMimeType.add("application/xslt+xml");
 		documentMimeType.add("text/x-ruby");
 		documentMimeType.add("text/x-script.phyton");
