@@ -39,7 +39,7 @@ import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
 public class LargeThumbnail extends ThumbnailConfigImpl {
 
 	public LargeThumbnail(String absolutePath) {
-		super("_large_thumbnail.png", 700, 80, absolutePath);
+		super("_large_thumbnail.png", 1920, 150, absolutePath);
 		this.getPostProcessing().setThumbnailConfig(this);
 	}
 }
