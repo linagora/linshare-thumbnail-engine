@@ -40,7 +40,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.linagora.LinThumbnail.postprocessing.Filter;
 import org.linagora.LinThumbnail.postprocessing.Resize;
 import org.linagora.LinThumbnail.postprocessing.ResizeSmallImage;

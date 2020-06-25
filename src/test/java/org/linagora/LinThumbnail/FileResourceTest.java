@@ -39,9 +39,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.linagora.LinThumbnail.impl.ThumbnailServiceImpl;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
 
@@ -49,12 +49,12 @@ public class FileResourceTest {
 
 	private ThumbnailServiceImpl ts = new ThumbnailServiceImpl();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ts.start();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		ts.stop();
 	}

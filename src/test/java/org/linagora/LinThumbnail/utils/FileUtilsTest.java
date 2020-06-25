@@ -38,7 +38,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.linagora.LinThumbnail.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
