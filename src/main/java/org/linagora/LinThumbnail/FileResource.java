@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.jodconverter.office.OfficeException;
 import org.linagora.LinThumbnail.utils.ThumbnailConfig;
 import org.linagora.LinThumbnail.utils.ThumbnailKind;
 import org.linagora.LinThumbnail.utils.impl.ThumbnailConfigImpl;
@@ -76,7 +77,7 @@ public abstract class FileResource {
 	 * @return File
 	 * @throws IOException : Input output exception
 	 */
-	public abstract File generateThumbnailFile(ThumbnailConfig thumb) throws IOException;
+	public abstract File generateThumbnailFile(ThumbnailConfig thumb) throws IOException, OfficeException;
 
 	public abstract Boolean needToGeneratePDFPreview();
 
@@ -88,8 +89,9 @@ public abstract class FileResource {
 	 * 			key ThumbnailKind
 	 * 			value File
 	 * @throws IOException : Input output exception
+	 * @throws OfficeException 
 	 */
-	public Map<ThumbnailKind, File> generateThumbnailMap() throws IOException {
+	public Map<ThumbnailKind, File> generateThumbnailMap() throws IOException, OfficeException {
 		Map<ThumbnailKind, File> thumbnailMap = new HashMap<ThumbnailKind, File>();
 		try {
 			for (ThumbnailKind kind : ThumbnailKind.values()) {
@@ -131,8 +133,9 @@ public abstract class FileResource {
 	 * 
 	 * @return File
 	 * @throws IOException : Input output exception
+	 * @throws OfficeException 
 	 */
-	protected File generateThumbnailImage() throws IOException {
+	protected File generateThumbnailImage() throws IOException, OfficeException {
 		return generateThumbnailFile(getDefaultThumbnail());
 	}
 
@@ -158,7 +161,7 @@ public abstract class FileResource {
 	 * @return InputStream
 	 * @throws IOException : InputStream
 	 */
-	public abstract InputStream generateThumbnailInputStream() throws IOException;
+	public abstract InputStream generateThumbnailInputStream() throws IOException, OfficeException;
 
 	/**
 	 * Generates a thumbnail of the FileResource to the given absolute path
@@ -167,8 +170,9 @@ public abstract class FileResource {
 	 * @param thumbnailAbsolutePath : String
 	 * @return true or false
 	 * @throws IOException : copyfile
+	 * @throws OfficeException 
 	 */
-	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException {
+	public boolean generateThumbnail(ThumbnailConfig thumbnail, String thumbnailAbsolutePath) throws IOException, OfficeException {
 		File thumbnailFile = new File(thumbnailAbsolutePath);
 		try {
 			File thumbnailImage = generateThumbnailFile(thumbnail);
@@ -191,12 +195,13 @@ public abstract class FileResource {
 	 * @param thumbnailAbsolutePath : the thumbnail absolute path
 	 * @return boolean
 	 * @throws IOException :  Input output exception
+	 * @throws OfficeException 
 	 */
-	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException {
+	public boolean generateThumbnail(String thumbnailAbsolutePath) throws IOException, OfficeException {
 		return generateThumbnail(getDefaultThumbnail(), thumbnailAbsolutePath);
 	}
 
-	public boolean generateThumbnail(ThumbnailConfig thumbnail) throws IOException {
+	public boolean generateThumbnail(ThumbnailConfig thumbnail) throws IOException, OfficeException {
 		return generateThumbnail(thumbnail, thumbnail.getDefaultName());
 	}
 
@@ -205,8 +210,9 @@ public abstract class FileResource {
 	 * 
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException ; Input output exception
+	 * @throws OfficeException 
 	 */
-	public boolean generateThumbnail() throws IOException {
+	public boolean generateThumbnail() throws IOException, OfficeException {
 		return generateThumbnail(getDefaultThumbnail());
 	}
 
@@ -216,8 +222,9 @@ public abstract class FileResource {
 	 * 
 	 * @return the path to the thumbnail
 	 * @throws IOException : IOException
+	 * @throws OfficeException 
 	 */
-	public String generateThumbnailToDefaultPath() throws IOException {
+	public String generateThumbnailToDefaultPath() throws IOException, OfficeException {
 		String path = this.getDefaultThumbnail().getDefaultName();
 		boolean result = generateThumbnail(path);
 		if (result) {
@@ -236,8 +243,9 @@ public abstract class FileResource {
 	 *            the thumbnail name
 	 * @return GENERATE_OK or GENERATE_KO
 	 * @throws IOException : Input output exception
+	 * @throws OfficeException 
 	 */
-	public boolean generateThumbnail(String thmbPath, String thmbName) throws IOException {
+	public boolean generateThumbnail(String thmbPath, String thmbName) throws IOException, OfficeException {
 		return generateThumbnail(thmbPath + File.pathSeparator + thmbName);
 	}
 }

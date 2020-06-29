@@ -45,6 +45,7 @@ import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.jodconverter.office.OfficeException;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
 import org.linagora.LinThumbnail.utils.Constants;
@@ -72,9 +73,10 @@ public class DocumentResource extends FileResource {
 
 	/**
 	 * 1) Convert to PDF 2) Convert to PNG
+	 * @throws OfficeException 
 	 */
 	@Override
-	public File generateThumbnailFile(ThumbnailConfig thumbnail) throws IOException {
+	public File generateThumbnailFile(ThumbnailConfig thumbnail) throws IOException, OfficeException {
 		BufferedImage image = null;
 		PDDocument document = null;
 		File thumbnailFile = null;
@@ -105,7 +107,7 @@ public class DocumentResource extends FileResource {
 		return thumbnailFile;
 	}
 
-	private File getPdfThumbnail(File inputFile) {
+	private File getPdfThumbnail(File inputFile) throws OfficeException {
 		String outputFormat = "pdf";
 		try {
 			if (pdfThumbnail != null) {
@@ -122,7 +124,7 @@ public class DocumentResource extends FileResource {
 	}
 
 	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
+	public InputStream generateThumbnailInputStream() throws IOException, OfficeException {
 		return ImageUtils.getInputStreamFromImage(generateThumbnailImage(), "png");
 	}
 

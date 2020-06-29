@@ -41,6 +41,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.jodconverter.office.OfficeException;
 import org.linagora.LinThumbnail.FileResource;
 import org.linagora.LinThumbnail.utils.Constants;
 import org.linagora.LinThumbnail.utils.ImageUtils;
@@ -80,7 +81,7 @@ public class ImageResource extends FileResource {
 	}
 
 	@Override
-	public InputStream generateThumbnailInputStream() throws IOException {
+	public InputStream generateThumbnailInputStream() throws IOException, OfficeException {
 		File image = generateThumbnailImage();
 		return ImageUtils.getInputStreamFromImage(image, "png");
 	}

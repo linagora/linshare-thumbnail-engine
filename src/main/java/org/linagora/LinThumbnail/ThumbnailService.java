@@ -34,12 +34,14 @@
 
 package org.linagora.LinThumbnail;
 
+import org.jodconverter.office.OfficeException;
+
 public interface ThumbnailService {
 
 	FileResourceFactory getFactory();
 
-	void start();
+	void start() throws OfficeException;
 
-	void stop();
+	void stop() throws OfficeException;
 
 }

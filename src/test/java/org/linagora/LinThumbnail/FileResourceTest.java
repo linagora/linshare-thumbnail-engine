@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.jodconverter.office.OfficeException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,17 +51,17 @@ public class FileResourceTest {
 	private ThumbnailServiceImpl ts = new ThumbnailServiceImpl();
 
 	@BeforeEach
-	public void setUp() {
+	public void setUp() throws OfficeException {
 		ts.start();
 	}
 
 	@AfterEach
-	public void tearDown() {
+	public void tearDown() throws OfficeException {
 		ts.stop();
 	}
 
 	@Test
-	public void testGenerateThumbnail() throws IOException {
+	public void testGenerateThumbnail() throws IOException, OfficeException {
 
 		FileResourceFactory fabrique = ts.getFactory();
 
@@ -175,7 +176,7 @@ public class FileResourceTest {
 		fr26.generateThumbnail();
 	}
 
-	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException {
+	public void generateThumbnailMap(FileResource fr, String absolutePath) throws IOException, OfficeException {
 		Map<ThumbnailKind, File> thmbImages = fr.generateThumbnailMap();
 		for (Map.Entry<ThumbnailKind, File> entry : thmbImages.entrySet()) {
 			String defaultFormat = ".png";

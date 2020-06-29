@@ -36,9 +36,10 @@ package org.linagora.LinThumbnail;
 
 import java.io.File;
 
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
+import org.jodconverter.OfficeDocumentConverter;
+import org.jodconverter.office.DefaultOfficeManagerBuilder;
+import org.jodconverter.office.OfficeException;
+import org.jodconverter.office.OfficeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,16 +66,16 @@ public class ServiceOfficeManager {
 	private ServiceOfficeManager() {
 	}
 
-	public File convertToPDF(File inputFile, File outputFile) {
+	public File convertToPDF(File inputFile, File outputFile) throws OfficeException {
 		OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
 		converter.convert(inputFile, outputFile);
 		return outputFile;
 	}
 
-	public void startOfficeManager() {
+	public void startOfficeManager() throws OfficeException {
 		if (!this.isStarted()) {
 			logger.info("Start the service...");
-			officeManager = new DefaultOfficeManagerConfiguration().buildOfficeManager();
+			officeManager = new DefaultOfficeManagerBuilder().build();
 			officeManager.start();
 			logger.info("service started");
 		}
@@ -89,7 +90,7 @@ public class ServiceOfficeManager {
 		return true;
 	}
 
-	public void stopOfficeManager() {
+	public void stopOfficeManager() throws OfficeException {
 		logger.info("Stop the service...");
 		officeManager.stop();
 	}

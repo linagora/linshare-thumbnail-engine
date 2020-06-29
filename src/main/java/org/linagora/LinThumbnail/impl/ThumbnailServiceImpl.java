@@ -34,6 +34,7 @@
 
 package org.linagora.LinThumbnail.impl;
 
+import org.jodconverter.office.OfficeException;
 import org.linagora.LinThumbnail.FileResourceFactory;
 import org.linagora.LinThumbnail.ServiceOfficeManager;
 import org.linagora.LinThumbnail.ThumbnailService;
@@ -52,12 +53,12 @@ public class ThumbnailServiceImpl implements ThumbnailService  {
 	}
 
 	@Override
-	public void start() {
+	public void start() throws OfficeException {
 		som.startOfficeManager();
 	}
 
 	@Override
-	public void stop() {
+	public void stop() throws OfficeException {
 		som.stopOfficeManager();
 	}
 }
